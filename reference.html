@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Nuclear Arsenal Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0c10;
+  --bg-panel: rgba(10, 14, 22, 0.92);
+  --border: rgba(56, 189, 248, 0.15);
+  --accent: #38bdf8;
+  --accent-dim: rgba(56, 189, 248, 0.3);
+  --danger: #ef4444;
+  --danger-dim: rgba(239, 68, 68, 0.3);
+  --warning: #f59e0b;
+  --text-primary: #e2e8f0;
+  --text-dim: #64748b;
+  --text-bright: #f8fafc;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Chakra Petch', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+#canvas-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
+canvas { display: block; }
+
+/* Scanline overlay */
+#canvas-container::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: linear-gradient(180deg, rgba(10,12,16,0.95) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--danger);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 var(--danger-dim); }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+.logo-icon::after {
+  content: '☢';
+  font-size: 18px;
+  color: var(--danger);
+}
+
+.header h1 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-bright);
+}
+
+.header h1 span {
+  color: var(--danger);
+}
+
+.header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--danger);
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* Side Panel */
+.side-panel {
+  position: fixed;
+  top: 80px;
+  left: 16px;
+  bottom: 16px;
+  width: 300px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  pointer-events: auto;
+  scrollbar-width: none;
+}
+
+.side-panel::-webkit-scrollbar { display: none; }
+
+.panel-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  backdrop-filter: blur(20px);
+}
+
+.panel-card h3 {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-card h3::before {
+  content: '';
+  width: 8px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* Stats */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stat-item {
+  padding: 10px;
+  background: rgba(56, 189, 248, 0.04);
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-bright);
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Country list */
+.country-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.country-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.country-item:hover {
+  background: rgba(56, 189, 248, 0.06);
+  border-color: var(--border);
+}
+
+.country-item.active {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--accent);
+}
+
+.country-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.country-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.country-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.country-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Detail panel */
+.detail-panel {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 320px;
+  z-index: 10;
+  pointer-events: auto;
+  transform: translateX(340px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-panel.open {
+  transform: translateX(0);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.detail-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.detail-close {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.detail-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.06);
+}
+
+.detail-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.detail-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-bright);
+}
+
+.detail-range {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 6px;
+}
+
+.detail-range-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 8px;
+}
+
+.range-bar-bg {
+  height: 4px;
+  background: rgba(239, 68, 68, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.range-bar-fill {
+  height: 100%;
+  background: var(--danger);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.range-km {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 6px;
+}
+
+/* Controls hint */
+.controls-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--bg-panel);
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+}
+
+/* Filter buttons */
+.filter-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-btn.active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  z-index: 100;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  backdrop-filter: blur(20px);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.tooltip.visible { opacity: 1; }
+
+.tooltip-name {
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.tooltip-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .side-panel { display: none; }
+  .detail-panel { width: 280px; right: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon"></div>
+    <h1>Global <span>Nuclear</span> Arsenal Tracker</h1>
+  </div>
+  <div class="header-right">
+    <div><span class="live-dot"></span>OPEN SOURCE INTELLIGENCE</div>
+    <div style="margin-top:2px;opacity:0.6">DATA: FAS / SIPRI / NTI — EST. 2025</div>
+  </div>
+</div>
+
+<div class="side-panel">
+  <div class="panel-card">
+    <h3>Global Overview</h3>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-value" id="total-warheads">12,121</div>
+        <div class="stat-label">Total Warheads</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">9</div>
+        <div class="stat-label">Nuclear States</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">3,904</div>
+        <div class="stat-label">Deployed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">62</div>
+        <div class="stat-label">Known Facilities</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-card">
+    <h3>Filter by Type</h3>
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="icbm">ICBM Silo</button>
+      <button class="filter-btn" data-filter="submarine">Sub Base</button>
+      <button class="filter-btn" data-filter="airbase">Air Base</button>
+      <button class="filter-btn" data-filter="storage">Storage</button>
+      <button class="filter-btn" data-filter="test">Test Site</button>
+    </div>
+  </div>
+
+  <div class="panel-card">
+    <h3>Nuclear States</h3>
+    <div class="country-list" id="country-list"></div>
+  </div>
+</div>
+
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-card">
+    <div class="detail-header">
+      <div class="detail-title" id="detail-title">—</div>
+      <button class="detail-close" id="detail-close">✕</button>
+    </div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-name" id="tooltip-name"></div>
+  <div class="tooltip-type" id="tooltip-type"></div>
+</div>
+
+<div class="controls-hint">Drag to rotate · Scroll to zoom · Click markers for details</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── NUCLEAR FACILITIES DATA ──
+const COUNTRY_COLORS = {
+  'United States': '#3b82f6',
+  'Russia': '#ef4444',
+  'China': '#f59e0b',
+  'France': '#8b5cf6',
+  'United Kingdom': '#06b6d4',
+  'India': '#f97316',
+  'Pakistan': '#22c55e',
+  'Israel': '#a855f7',
+  'North Korea': '#ec4899'
+};
+
+const COUNTRY_WARHEADS = {
+  'United States': 5044,
+  'Russia': 5580,
+  'China': 500,
+  'France': 290,
+  'United Kingdom': 225,
+  'India': 172,
+  'Pakistan': 170,
+  'Israel': 90,
+  'North Korea': 50
+};
+
+const facilities = [
+  // ── UNITED STATES ──
+  { name: "Malmstrom AFB", country: "United States", lat: 47.506, lng: -111.183, type: "icbm", missiles: "Minuteman III", warheads: 150, range: 13000, status: "Active" },
+  { name: "Minot AFB", country: "United States", lat: 48.416, lng: -101.358, type: "icbm", missiles: "Minuteman III", warheads: 150, range: 13000, status: "Active" },
+  { name: "F.E. Warren AFB", country: "United States", lat: 41.153, lng: -104.866, type: "icbm", missiles: "Minuteman III", warheads: 150, range: 13000, status: "Active" },
+  { name: "Kings Bay Naval Base", country: "United States", lat: 30.796, lng: -81.563, type: "submarine", missiles: "Trident II D5", warheads: 960, range: 12000, status: "Active" },
+  { name: "Bangor Naval Base", country: "United States", lat: 47.722, lng: -122.714, type: "submarine", missiles: "Trident II D5", warheads: 960, range: 12000, status: "Active" },
+  { name: "Whiteman AFB", country: "United States", lat: 38.730, lng: -93.548, type: "airbase", missiles: "B-2 Spirit / B-61, B-83", warheads: 20, range: 11100, status: "Active" },
+  { name: "Barksdale AFB", country: "United States", lat: 32.501, lng: -93.663, type: "airbase", missiles: "B-52H / AGM-86B ALCM", warheads: 44, range: 16232, status: "Active" },
+  { name: "Pantex Plant", country: "United States", lat: 35.317, lng: -101.571, type: "storage", missiles: "Assembly/Disassembly", warheads: 2000, range: 0, status: "Active" },
+  { name: "Kirtland AFB Storage", country: "United States", lat: 35.049, lng: -106.567, type: "storage", missiles: "Underground Vaults", warheads: 0, range: 0, status: "Active" },
+  { name: "Nevada National Security Site", country: "United States", lat: 37.0, lng: -116.05, type: "test", missiles: "Subcritical Tests", warheads: 0, range: 0, status: "Active" },
+
+  // ── RUSSIA ──
+  { name: "Kozelsk (60th Missile Div.)", country: "Russia", lat: 54.033, lng: 36.0, type: "icbm", missiles: "SS-27 Topol-M", warheads: 60, range: 11000, status: "Active" },
+  { name: "Tatishchevo (60th Army)", country: "Russia", lat: 51.7, lng: 45.4, type: "icbm", missiles: "SS-27 / SS-29 Sarmat", warheads: 120, range: 18000, status: "Active" },
+  { name: "Dombarovsky", country: "Russia", lat: 50.75, lng: 59.53, type: "icbm", missiles: "SS-18 Satan / SS-29", warheads: 100, range: 16000, status: "Active" },
+  { name: "Uzhur (62nd Missile Div.)", country: "Russia", lat: 55.3, lng: 89.8, type: "icbm", missiles: "SS-18 Satan", warheads: 60, range: 16000, status: "Active" },
+  { name: "Novosibirsk (39th Div.)", country: "Russia", lat: 55.0, lng: 82.9, type: "icbm", missiles: "SS-25 Topol", warheads: 36, range: 10500, status: "Active" },
+  { name: "Yoshkar-Ola (14th Div.)", country: "Russia", lat: 56.6, lng: 47.9, type: "icbm", missiles: "Yars RS-24", warheads: 36, range: 12000, status: "Active" },
+  { name: "Gadzhiyevo (Northern Fleet)", country: "Russia", lat: 69.25, lng: 33.33, type: "submarine", missiles: "Bulava SLBM", warheads: 384, range: 9300, status: "Active" },
+  { name: "Vilyuchinsk (Pacific Fleet)", country: "Russia", lat: 52.93, lng: 158.4, type: "submarine", missiles: "Sineva / Liner SLBM", warheads: 256, range: 11500, status: "Active" },
+  { name: "Engels-2 Air Base", country: "Russia", lat: 51.483, lng: 46.2, type: "airbase", missiles: "Tu-160 / Kh-102 ALCM", warheads: 60, range: 5500, status: "Active" },
+  { name: "Ukrainka Air Base", country: "Russia", lat: 51.17, lng: 128.4, type: "airbase", missiles: "Tu-95MS / Kh-55", warheads: 40, range: 3000, status: "Active" },
+  { name: "Sarov (Arzamas-16)", country: "Russia", lat: 54.933, lng: 43.317, type: "storage", missiles: "Research/Production", warheads: 0, range: 0, status: "Active" },
+  { name: "Novaya Zemlya Test Site", country: "Russia", lat: 73.37, lng: 54.97, type: "test", missiles: "Nuclear Test Range", warheads: 0, range: 0, status: "Standby" },
+
+  // ── CHINA ──
+  { name: "Jianshui (Base 63)", country: "China", lat: 23.6, lng: 102.8, type: "icbm", missiles: "DF-31AG", warheads: 12, range: 11200, status: "Active" },
+  { name: "Sundian (Base 65)", country: "China", lat: 40.5, lng: 110.3, type: "icbm", missiles: "DF-41", warheads: 36, range: 15000, status: "Active" },
+  { name: "Haiyan (Yumen Silos)", country: "China", lat: 40.1, lng: 97.0, type: "icbm", missiles: "DF-41 (silo-based)", warheads: 120, range: 15000, status: "Under Construction" },
+  { name: "Hami Silo Field", country: "China", lat: 42.8, lng: 93.5, type: "icbm", missiles: "DF-41 (silo-based)", warheads: 110, range: 15000, status: "Under Construction" },
+  { name: "Yulin Naval Base (Hainan)", country: "China", lat: 18.22, lng: 109.57, type: "submarine", missiles: "JL-3 SLBM", warheads: 72, range: 10000, status: "Active" },
+  { name: "Jianjiangkou Sub Base", country: "China", lat: 36.1, lng: 120.6, type: "submarine", missiles: "JL-2 SLBM", warheads: 48, range: 7400, status: "Active" },
+  { name: "Lop Nur Test Site", country: "China", lat: 41.55, lng: 88.37, type: "test", missiles: "Historic Test Range", warheads: 0, range: 0, status: "Inactive" },
+
+  // ── FRANCE ──
+  { name: "Île Longue Submarine Base", country: "France", lat: 48.3, lng: -4.517, type: "submarine", missiles: "M51 SLBM", warheads: 240, range: 10000, status: "Active" },
+  { name: "Istres-Le Tubé Air Base", country: "France", lat: 43.517, lng: 4.917, type: "airbase", missiles: "ASMP-A / Rafale", warheads: 40, range: 600, status: "Active" },
+  { name: "Saint-Dizier Air Base", country: "France", lat: 48.633, lng: 4.9, type: "airbase", missiles: "ASMP-A / Rafale", warheads: 20, range: 600, status: "Active" },
+
+  // ── UNITED KINGDOM ──
+  { name: "HMNB Clyde (Faslane)", country: "United Kingdom", lat: 56.067, lng: -4.817, type: "submarine", missiles: "Trident II D5", warheads: 225, range: 12000, status: "Active" },
+  { name: "AWE Aldermaston", country: "United Kingdom", lat: 51.367, lng: -1.15, type: "storage", missiles: "Warhead Production", warheads: 0, range: 0, status: "Active" },
+  { name: "RNAD Coulport", country: "United Kingdom", lat: 56.05, lng: -4.883, type: "storage", missiles: "Warhead Storage", warheads: 0, range: 0, status: "Active" },
+
+  // ── INDIA ──
+  { name: "INS Arihant Base (Vizag)", country: "India", lat: 17.7, lng: 83.3, type: "submarine", missiles: "K-4 / K-15 SLBM", warheads: 12, range: 3500, status: "Active" },
+  { name: "Agni Launch Complex (Wheeler Is.)", country: "India", lat: 20.74, lng: 87.09, type: "icbm", missiles: "Agni-V", warheads: 0, range: 5500, status: "Active" },
+  { name: "Chandipur (ITR)", country: "India", lat: 21.45, lng: 86.74, type: "test", missiles: "Missile Test Range", warheads: 0, range: 0, status: "Active" },
+  { name: "Pokhran Test Range", country: "India", lat: 26.73, lng: 71.37, type: "test", missiles: "Nuclear Test Range", warheads: 0, range: 0, status: "Standby" },
+
+  // ── PAKISTAN ──
+  { name: "Sargodha Air Base", country: "Pakistan", lat: 32.05, lng: 72.67, type: "airbase", missiles: "Ra'ad ALCM / F-16", warheads: 36, range: 350, status: "Active" },
+  { name: "Giri Habibullah (storage)", country: "Pakistan", lat: 34.13, lng: 73.32, type: "storage", missiles: "Shaheen / Ghauri", warheads: 0, range: 0, status: "Active" },
+  { name: "Khuzdar (suspected)", country: "Pakistan", lat: 27.8, lng: 66.6, type: "storage", missiles: "Mobile TELs", warheads: 0, range: 0, status: "Suspected" },
+  { name: "Sonmiani Test Range", country: "Pakistan", lat: 25.2, lng: 66.6, type: "test", missiles: "Missile Test Range", warheads: 0, range: 0, status: "Active" },
+
+  // ── ISRAEL (undeclared) ──
+  { name: "Negev Nuclear Research Center", country: "Israel", lat: 31.0, lng: 35.15, type: "storage", missiles: "Estimated Jericho III", warheads: 90, range: 6500, status: "Undeclared" },
+  { name: "Palmachim Air Base", country: "Israel", lat: 31.9, lng: 34.69, type: "icbm", missiles: "Jericho III", warheads: 0, range: 6500, status: "Undeclared" },
+  { name: "Sdot Micha (Zekharyah)", country: "Israel", lat: 31.72, lng: 34.93, type: "icbm", missiles: "Jericho II/III", warheads: 25, range: 6500, status: "Undeclared" },
+
+  // ── NORTH KOREA ──
+  { name: "Yongbyon Nuclear Complex", country: "North Korea", lat: 39.8, lng: 125.75, type: "storage", missiles: "Plutonium Production", warheads: 0, range: 0, status: "Active" },
+  { name: "Sanum-dong Missile Base", country: "North Korea", lat: 39.03, lng: 125.72, type: "icbm", missiles: "Hwasong-17/18", warheads: 10, range: 15000, status: "Active" },
+  { name: "Sinpo Submarine Base", country: "North Korea", lat: 40.03, lng: 128.17, type: "submarine", missiles: "Pukguksong SLBM", warheads: 0, range: 2000, status: "Testing" },
+  { name: "Punggye-ri Test Site", country: "North Korea", lat: 41.28, lng: 129.09, type: "test", missiles: "Nuclear Test Tunnels", warheads: 0, range: 0, status: "Collapsed/Standby" }
+];
+
+const TYPE_LABELS = {
+  icbm: 'ICBM / Missile Silo',
+  submarine: 'Submarine Base',
+  airbase: 'Nuclear Air Base',
+  storage: 'Storage / Production',
+  test: 'Test Site'
+};
+
+// ── THREE.JS SCENE ──
+let scene, camera, renderer, globe, points = [], raycaster, mouse;
+let isDragging = false, prevMouse = { x: 0, y: 0 };
+let rotationVelocity = { x: 0, y: 0 };
+let targetRotation = { x: 0.3, y: 0 };
+let autoRotate = true;
+let selectedFacility = null;
+let activeFilter = 'all';
+let activeCountry = null;
+
+const container = document.getElementById('canvas-container');
+
+function init() {
+  scene = new THREE.Scene();
+  
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 3.2;
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x0a0c10, 1);
+  container.appendChild(renderer.domElement);
+
+  raycaster = new THREE.Raycaster();
+  raycaster.params.Points = { threshold: 0.04 };
+  mouse = new THREE.Vector2();
+
+  createStarfield();
+  createGlobe();
+  createFacilityPoints();
+  createAtmosphere();
+  
+  setupLights();
+  setupEvents();
+  buildCountryList();
+  setupFilters();
+  
+  animate();
+}
+
+function createStarfield() {
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(3000 * 3);
+  for (let i = 0; i < 3000; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 100;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({ color: 0x334155, size: 0.08, sizeAttenuation: true });
+  scene.add(new THREE.Points(geo, mat));
+}
+
+function createGlobe() {
+  // Main sphere — dark surface
+  const sphereGeo = new THREE.SphereGeometry(1, 64, 64);
+  const sphereMat = new THREE.MeshPhongMaterial({
+    color: 0x0c1220,
+    emissive: 0x050a14,
+    specular: 0x1e3a5f,
+    shininess: 15,
+    transparent: true,
+    opacity: 0.95
+  });
+  globe = new THREE.Mesh(sphereGeo, sphereMat);
+  scene.add(globe);
+
+  // Wireframe grid overlay
+  const wireGeo = new THREE.SphereGeometry(1.002, 36, 18);
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0x1e3a5f,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.08
+  });
+  const wire = new THREE.Mesh(wireGeo, wireMat);
+  globe.add(wire);
+
+  // Equator ring
+  const ringGeo = new THREE.RingGeometry(1.003, 1.007, 128);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0x38bdf8,
+    transparent: true,
+    opacity: 0.1,
+    side: THREE.DoubleSide
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  globe.add(ring);
+}
+
+function latLngToVector3(lat, lng, radius) {
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (lng + 180) * (Math.PI / 180);
+  return new THREE.Vector3(
+    -radius * Math.sin(phi) * Math.cos(theta),
+    radius * Math.cos(phi),
+    radius * Math.sin(phi) * Math.sin(theta)
+  );
+}
+
+function createFacilityPoints() {
+  facilities.forEach((f, i) => {
+    const pos = latLngToVector3(f.lat, f.lng, 1.01);
+    const color = new THREE.Color(COUNTRY_COLORS[f.country] || '#ffffff');
+
+    // Outer glow ring
+    const ringGeo = new THREE.RingGeometry(0.012, 0.022, 16);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.35,
+      side: THREE.DoubleSide
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.copy(pos);
+    ring.lookAt(pos.clone().multiplyScalar(2));
+    ring.userData = { facilityIndex: i };
+    globe.add(ring);
+
+    // Inner dot
+    const dotGeo = new THREE.CircleGeometry(0.009, 12);
+    const dotMat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.9,
+      side: THREE.DoubleSide
+    });
+    const dot = new THREE.Mesh(dotGeo, dotMat);
+    dot.position.copy(pos);
+    dot.lookAt(pos.clone().multiplyScalar(2));
+    dot.userData = { facilityIndex: i };
+    globe.add(dot);
+
+    // Pulse animation ring
+    const pulseGeo = new THREE.RingGeometry(0.009, 0.011, 16);
+    const pulseMat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.5,
+      side: THREE.DoubleSide
+    });
+    const pulse = new THREE.Mesh(pulseGeo, pulseMat);
+    pulse.position.copy(pos);
+    pulse.lookAt(pos.clone().multiplyScalar(2));
+    pulse.userData = { facilityIndex: i, isPulse: true, baseScale: 1 };
+    globe.add(pulse);
+
+    points.push({ ring, dot, pulse, facility: f });
+  });
+}
+
+function createAtmosphere() {
+  const atmosGeo = new THREE.SphereGeometry(1.05, 64, 64);
+  const atmosMat = new THREE.ShaderMaterial({
+    vertexShader: `
+      varying vec3 vNormal;
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vNormal;
+      void main() {
+        float intensity = pow(0.6 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+        gl_FragColor = vec4(0.22, 0.74, 0.97, 0.15) * intensity;
+      }
+    `,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide,
+    transparent: true
+  });
+  scene.add(new THREE.Mesh(atmosGeo, atmosMat));
+}
+
+function setupLights() {
+  scene.add(new THREE.AmbientLight(0x334155, 0.6));
+  const dirLight = new THREE.DirectionalLight(0x94a3b8, 0.8);
+  dirLight.position.set(5, 3, 5);
+  scene.add(dirLight);
+  const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.3);
+  rimLight.position.set(-5, -2, -3);
+  scene.add(rimLight);
+}
+
+// ── INTERACTION ──
+function setupEvents() {
+  const canvas = renderer.domElement;
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    autoRotate = false;
+    prevMouse = { x: e.clientX, y: e.clientY };
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    // Tooltip on hover
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    
+    if (isDragging) {
+      const dx = e.clientX - prevMouse.x;
+      const dy = e.clientY - prevMouse.y;
+      rotationVelocity.x = dy * 0.003;
+      rotationVelocity.y = dx * 0.003;
+      targetRotation.x += rotationVelocity.x;
+      targetRotation.y += rotationVelocity.y;
+      prevMouse = { x: e.clientX, y: e.clientY };
+    }
+    
+    checkHover(e);
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    isDragging = false;
+    setTimeout(() => { autoRotate = true; }, 3000);
+  });
+
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    camera.position.z = Math.max(1.8, Math.min(6, camera.position.z + e.deltaY * 0.002));
+  }, { passive: false });
+
+  canvas.addEventListener('click', (e) => {
+    checkClick(e);
+  });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  document.getElementById('detail-close').addEventListener('click', () => {
+    document.getElementById('detail-panel').classList.remove('open');
+    selectedFacility = null;
+    clearRangeRing();
+  });
+}
+
+let hoveredFacility = null;
+
+function checkHover(e) {
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = points.flatMap(p => [p.ring, p.dot]);
+  const intersects = raycaster.intersectObjects(meshes);
+  
+  const tooltip = document.getElementById('tooltip');
+  
+  if (intersects.length > 0) {
+    const idx = intersects[0].object.userData.facilityIndex;
+    if (idx !== undefined) {
+      const f = facilities[idx];
+      if (isVisible(f)) {
+        hoveredFacility = idx;
+        document.getElementById('tooltip-name').textContent = f.name;
+        document.getElementById('tooltip-type').textContent = `${f.country} · ${TYPE_LABELS[f.type]}`;
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top = (e.clientY - 10) + 'px';
+        tooltip.classList.add('visible');
+        renderer.domElement.style.cursor = 'pointer';
+        return;
+      }
+    }
+  }
+  
+  hoveredFacility = null;
+  tooltip.classList.remove('visible');
+  renderer.domElement.style.cursor = 'grab';
+}
+
+function checkClick(e) {
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = points.flatMap(p => [p.ring, p.dot]);
+  const intersects = raycaster.intersectObjects(meshes);
+  
+  if (intersects.length > 0) {
+    const idx = intersects[0].object.userData.facilityIndex;
+    if (idx !== undefined) {
+      const f = facilities[idx];
+      if (isVisible(f)) {
+        showDetail(f);
+      }
+    }
+  }
+}
+
+function isVisible(f) {
+  if (activeFilter !== 'all' && f.type !== activeFilter) return false;
+  if (activeCountry && f.country !== activeCountry) return false;
+  return true;
+}
+
+function showDetail(f) {
+  selectedFacility = f;
+  document.getElementById('detail-title').textContent = f.name;
+  
+  const maxRange = 18000;
+  const rangePct = f.range ? Math.min((f.range / maxRange) * 100, 100) : 0;
+  
+  let html = `
+    <div class="detail-row"><span class="detail-label">Country</span><span class="detail-value">${f.country}</span></div>
+    <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">${TYPE_LABELS[f.type]}</span></div>
+    <div class="detail-row"><span class="detail-label">System</span><span class="detail-value">${f.missiles}</span></div>
+    <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value">${f.status}</span></div>
+    ${f.warheads ? `<div class="detail-row"><span class="detail-label">Est. Warheads</span><span class="detail-value" style="color:var(--danger)">${f.warheads.toLocaleString()}</span></div>` : ''}
+  `;
+  
+  if (f.range > 0) {
+    html += `
+      <div class="detail-range">
+        <div class="detail-range-title">Maximum Range</div>
+        <div class="range-bar-bg"><div class="range-bar-fill" style="width:${rangePct}%"></div></div>
+        <div class="range-km">${f.range.toLocaleString()} km</div>
+      </div>
+    `;
+  }
+  
+  document.getElementById('detail-content').innerHTML = html;
+  document.getElementById('detail-panel').classList.add('open');
+  
+  // Draw range ring on globe
+  if (f.range > 0) {
+    drawRangeRing(f);
+  } else {
+    clearRangeRing();
+  }
+}
+
+let rangeRingMesh = null;
+function drawRangeRing(f) {
+  clearRangeRing();
+  const angularRadius = f.range / 6371;
+  const center = latLngToVector3(f.lat, f.lng, 1.015);
+  
+  const ringPoints = [];
+  const segments = 64;
+  for (let i = 0; i <= segments; i++) {
+    const angle = (i / segments) * Math.PI * 2;
+    const lat2 = Math.asin(
+      Math.sin(f.lat * Math.PI / 180) * Math.cos(angularRadius) +
+      Math.cos(f.lat * Math.PI / 180) * Math.sin(angularRadius) * Math.cos(angle)
+    );
+    const lng2 = f.lng * Math.PI / 180 + Math.atan2(
+      Math.sin(angle) * Math.sin(angularRadius) * Math.cos(f.lat * Math.PI / 180),
+      Math.cos(angularRadius) - Math.sin(f.lat * Math.PI / 180) * Math.sin(lat2)
+    );
+    const pt = latLngToVector3(lat2 * 180 / Math.PI, lng2 * 180 / Math.PI, 1.012);
+    ringPoints.push(pt);
+  }
+  
+  const geo = new THREE.BufferGeometry().setFromPoints(ringPoints);
+  const mat = new THREE.LineBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.6 });
+  rangeRingMesh = new THREE.Line(geo, mat);
+  globe.add(rangeRingMesh);
+}
+
+function clearRangeRing() {
+  if (rangeRingMesh) {
+    globe.remove(rangeRingMesh);
+    rangeRingMesh.geometry.dispose();
+    rangeRingMesh.material.dispose();
+    rangeRingMesh = null;
+  }
+}
+
+// ── UI ──
+function buildCountryList() {
+  const list = document.getElementById('country-list');
+  const sorted = Object.entries(COUNTRY_WARHEADS).sort((a, b) => b[1] - a[1]);
+  
+  sorted.forEach(([country, count]) => {
+    const item = document.createElement('div');
+    item.className = 'country-item';
+    item.innerHTML = `
+      <div class="country-left">
+        <div class="country-dot" style="background:${COUNTRY_COLORS[country]}"></div>
+        <div class="country-name">${country}</div>
+      </div>
+      <div class="country-count">${count.toLocaleString()}</div>
+    `;
+    item.addEventListener('click', () => {
+      if (activeCountry === country) {
+        activeCountry = null;
+        item.classList.remove('active');
+      } else {
+        document.querySelectorAll('.country-item').forEach(el => el.classList.remove('active'));
+        activeCountry = country;
+        item.classList.add('active');
+      }
+      updatePointVisibility();
+    });
+    list.appendChild(item);
+  });
+}
+
+function setupFilters() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      updatePointVisibility();
+    });
+  });
+}
+
+function updatePointVisibility() {
+  points.forEach((p) => {
+    const vis = isVisible(p.facility);
+    p.ring.visible = vis;
+    p.dot.visible = vis;
+    p.pulse.visible = vis;
+  });
+}
+
+// ── ANIMATE ──
+function animate() {
+  requestAnimationFrame(animate);
+  
+  if (autoRotate) {
+    targetRotation.y += 0.0012;
+  }
+  
+  // Damping
+  rotationVelocity.x *= 0.92;
+  rotationVelocity.y *= 0.92;
+  
+  globe.rotation.x += (targetRotation.x - globe.rotation.x) * 0.05;
+  globe.rotation.y += (targetRotation.y - globe.rotation.y) * 0.05;
+  
+  // Pulse animation
+  const time = Date.now() * 0.001;
+  points.forEach((p, i) => {
+    if (p.pulse.visible) {
+      const scale = 1 + Math.sin(time * 2 + i * 0.5) * 0.8;
+      p.pulse.scale.set(scale, scale, 1);
+      p.pulse.material.opacity = 0.4 * (1 - (scale - 1) / 0.8);
+    }
+  });
+  
+  renderer.render(scene, camera);
+}
+
+// ── INIT ──
+init();
+</script>
+</body>
+</html>

@@ -126,6 +126,7 @@ canvas {
   font-size: 11px;
   color: var(--text-dim);
   text-align: right;
+  pointer-events: auto;
 }
 
 .live-dot {
@@ -1183,37 +1184,33 @@ canvas {
   pointer-events: auto;
 }
 
-/* Data sources modal */
+/* Data sources button — lives inside .header-right */
 .sources-button {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 30;
+  display: block;
+  margin-top: 5px;
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--text-dim);
-  background: rgba(10, 12, 16, 0.6);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  border-radius: 10px;
-  padding: 8px 12px;
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
+  text-align: right;
+  pointer-events: auto;
   opacity: 0.75;
-  transition: opacity 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
-  backdrop-filter: blur(20px);
+  transition: opacity 0.15s, color 0.15s;
 }
 
 .sources-button:hover {
   opacity: 1;
-  border-color: rgba(56, 189, 248, 0.35);
   color: var(--accent);
-  transform: translateY(-1px);
 }
 
 .sources-button span {
   color: var(--accent);
-  margin-right: 6px;
+  margin-right: 4px;
 }
 
 .data-sources-backdrop {

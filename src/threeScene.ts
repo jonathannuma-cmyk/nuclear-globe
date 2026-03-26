@@ -8,6 +8,7 @@ import {
   vector3ToLatLng,
   SUBMARINE_PATROLS,
   type SubmarinePatrol,
+  type MajorCity,
 } from "./data";
 
 export type FilterType = FacilityType | "all";
@@ -25,7 +26,7 @@ export interface SceneCallbacks {
     facility: Facility | null,
     pos: { x: number; y: number } | null
   ) => void;
-  onGlobeClick?: (lat: number, lng: number) => void;
+  onCityClick?: (city: MajorCity) => void;
 }
 
 export interface SceneApi {
@@ -39,6 +40,7 @@ export interface SceneApi {
   setThreatTarget: (target: ThreatTarget | null) => void;
   setThreatArcs: (facilityList: Facility[]) => void;
   setThreatRangeDomes: (facilityList: Facility[]) => void;
+  setCities: (cities: MajorCity[]) => void;
   centerGlobeOn: (lat: number, lng: number) => void;
   scheduleAutoRotateResume: () => void;
   flyCameraToDefault: () => Promise<void>;
@@ -109,6 +111,8 @@ export function createThreeScene(
   let threatMarkerGroup: THREE.Group | null = null;
   let threatArcsGroup: THREE.Group | null = null;
   let patrolGroup: THREE.Group | null = null;
+  let cityMarkers: { mesh: THREE.Mesh; city: MajorCity }[] = [];
+  let cityMarkersGroup: THREE.Group | null = null;
   const patrolItems: {
     patrol: SubmarinePatrol;
     pathLine: THREE.Line;
@@ -183,7 +187,10 @@ export function createThreeScene(
       const position = new THREE.Vector3(pos.x, pos.y, pos.z);
       const color = new THREE.Color(COUNTRY_COLORS[f.country] || "#ffffff");
 
-      const ringGeo = new THREE.RingGeometry(0.015, 0.025, 16);
+      // Secondary facilities (storage, test) render at 50% of primary marker size
+      const s = (f.type === "storage" || f.type === "test") ? 0.5 : 1.0;
+
+      const ringGeo = new THREE.RingGeometry(0.015 * s, 0.025 * s, 16);
       const ringMat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
@@ -196,7 +203,7 @@ export function createThreeScene(
       ring.userData = { facilityIndex: i };
       globe.add(ring);
 
-      const dotGeo = new THREE.CircleGeometry(0.015, 12);
+      const dotGeo = new THREE.CircleGeometry(0.015 * s, 12);
       const dotMat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
@@ -209,7 +216,7 @@ export function createThreeScene(
       dot.userData = { facilityIndex: i };
       globe.add(dot);
 
-      const pulseGeo = new THREE.RingGeometry(0.014, 0.018, 16);
+      const pulseGeo = new THREE.RingGeometry(0.014 * s, 0.018 * s, 16);
       const pulseMat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
@@ -226,12 +233,12 @@ export function createThreeScene(
     });
   }
 
-  function   setWarheadsByYear(byCountry: Record<string, number>) {
-    const counts = Object.values(byCountry).filter((c) => c > 0);
-    const maxCount = counts.length ? Math.max(...counts) : 1;
+  function setWarheadsByYear(byCountry: Record<string, number>) {
     points.forEach((p) => {
       const count = byCountry[p.facility.country] ?? 0;
-      const scale = count === 0 ? 0 : Math.max(0.5, 0.25 + 0.75 * Math.min(1, count / maxCount));
+      // Hide markers entirely for years before this country had nuclear weapons.
+      // All visible markers use a fixed scale so size is uniform across countries.
+      const scale = count === 0 ? 0 : 1;
       p.yearScale = scale;
       p.ring.scale.set(scale, scale, 1);
       p.dot.scale.set(scale, scale, 1);
@@ -307,6 +314,48 @@ export function createThreeScene(
         currentLat: w0.lat,
         currentLng: w0.lng,
       });
+    });
+  }
+
+  function clearCityMarkers() {
+    if (cityMarkersGroup && globe) {
+      globe.remove(cityMarkersGroup);
+      cityMarkersGroup.children.forEach((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry.dispose();
+          (child.material as THREE.Material).dispose();
+        }
+      });
+      cityMarkersGroup = null;
+    }
+    cityMarkers = [];
+  }
+
+  function createCityMarkers(cities: MajorCity[]) {
+    if (!globe) return;
+    clearCityMarkers();
+    const group = new THREE.Group();
+    group.visible = false;
+    cityMarkersGroup = group;
+    globe.add(group);
+    const radius = 1.013;
+    cities.forEach((city, i) => {
+      const pos = latLngToVector3(city.lat, city.lng, radius);
+      const posVec = new THREE.Vector3(pos.x, pos.y, pos.z);
+      const geo = new THREE.CircleGeometry(0.013, 4);
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.55,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(posVec);
+      mesh.lookAt(posVec.clone().multiplyScalar(2));
+      mesh.rotateZ(Math.PI / 4);
+      mesh.userData = { cityIndex: i };
+      group.add(mesh);
+      cityMarkers.push({ mesh, city });
     });
   }
 
@@ -734,7 +783,7 @@ export function createThreeScene(
             x: e.clientX + 14,
             y: e.clientY - 10,
           });
-          renderer.domElement.style.cursor = threatMode ? "crosshair" : "pointer";
+          renderer.domElement.style.cursor = "pointer";
           return;
         }
       }
@@ -748,13 +797,22 @@ export function createThreeScene(
           const item = patrolItems[patrolIdx];
           const fac = patrolToFacility(item.patrol, item.currentLat, item.currentLng);
           callbacks.onHoverFacility(fac, { x: e.clientX + 14, y: e.clientY - 10 });
-          renderer.domElement.style.cursor = threatMode ? "crosshair" : "pointer";
+          renderer.domElement.style.cursor = "pointer";
           return;
         }
       }
     }
+    if (threatMode && cityMarkersGroup?.visible) {
+      const cityMeshes = cityMarkers.map((c) => c.mesh);
+      const cityHits = raycaster.intersectObjects(cityMeshes);
+      if (cityHits.length > 0) {
+        callbacks.onHoverFacility(null, null);
+        renderer.domElement.style.cursor = "pointer";
+        return;
+      }
+    }
     callbacks.onHoverFacility(null, null);
-    renderer.domElement.style.cursor = threatMode ? "crosshair" : "grab";
+    renderer.domElement.style.cursor = "grab";
   }
 
   function checkClick(e: MouseEvent) {
@@ -763,14 +821,15 @@ export function createThreeScene(
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
 
-    if (threatMode && callbacks.onGlobeClick) {
-      const globeHits = raycaster.intersectObject(globe);
-      if (globeHits.length > 0) {
-        const hit = globeHits[0];
-        const local = globe.worldToLocal(hit.point.clone());
-        const { lat, lng } = vector3ToLatLng(local.x, local.y, local.z);
-        callbacks.onGlobeClick(lat, lng);
-        return;
+    if (threatMode && callbacks.onCityClick && cityMarkersGroup?.visible) {
+      const cityMeshes = cityMarkers.map((c) => c.mesh);
+      const cityHits = raycaster.intersectObjects(cityMeshes);
+      if (cityHits.length > 0) {
+        const cityIdx = (cityHits[0].object.userData as any).cityIndex as number | undefined;
+        if (cityIdx !== undefined && cityMarkers[cityIdx]) {
+          callbacks.onCityClick(cityMarkers[cityIdx].city);
+          return;
+        }
       }
     }
 
@@ -820,6 +879,7 @@ export function createThreeScene(
   }
 
   function scheduleAutoRotateResume() {
+    if (threatMode) return;
     if (autoRotateResumeTimeoutId) clearTimeout(autoRotateResumeTimeoutId);
     autoRotateResumeTimeoutId = setTimeout(() => {
       autoRotateResumeTimeoutId = null;
@@ -909,7 +969,7 @@ export function createThreeScene(
     requestAnimationFrame(animate);
 
     if (autoRotate) {
-      targetRotation.y += 0.0012;
+      targetRotation.y += 0.0006;
     }
 
     rotationVelocity.x *= 0.92;
@@ -1002,6 +1062,9 @@ export function createThreeScene(
       setWarheadsByYear(byCountry);
       updatePointVisibility();
     },
+    setCities(cities: MajorCity[]) {
+      createCityMarkers(cities);
+    },
     addCountryBorders,
     showRangeForFacility(facility: Facility | null) {
       showRangeForFacilityImpl(facility);
@@ -1013,12 +1076,20 @@ export function createThreeScene(
       threatMode = active;
       if (active) {
         clearRangeDomes();
+        if (cityMarkersGroup) cityMarkersGroup.visible = true;
+        if (autoRotateResumeTimeoutId) {
+          clearTimeout(autoRotateResumeTimeoutId);
+          autoRotateResumeTimeoutId = null;
+        }
+        autoRotate = false;
       } else {
         setThreatTargetImpl(null);
         clearThreatArcs();
         clearRangeDomes();
+        if (cityMarkersGroup) cityMarkersGroup.visible = false;
+        autoRotate = true;
       }
-      renderer.domElement.style.cursor = active ? "crosshair" : "grab";
+      renderer.domElement.style.cursor = "grab";
     },
     setThreatTarget(target: ThreatTarget | null) {
       setThreatTargetImpl(target);

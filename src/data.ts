@@ -523,6 +523,7 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
       { name: "St Petersburg", lat: 59.93, lng: 30.32 },
+      { name: "Yekaterinburg", lat: 56.84, lng: 60.6 },
       { name: "Novosibirsk", lat: 55.0, lng: 82.9 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
@@ -540,8 +541,9 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
       { name: "St Petersburg", lat: 59.93, lng: 30.32 },
-      { name: "Novosibirsk", lat: 55.0, lng: 82.9 },
+      { name: "Yekaterinburg", lat: 56.84, lng: 60.6 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
+      { name: "Pyongyang", lat: 39.03, lng: 125.73 },
     ],
   },
   {
@@ -556,9 +558,10 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
-      { name: "St Petersburg", lat: 59.93, lng: 30.32 },
       { name: "Novosibirsk", lat: 55.0, lng: 82.9 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
+      { name: "Shanghai", lat: 31.23, lng: 121.47 },
+      { name: "Tehran", lat: 35.69, lng: 51.39 },
     ],
   },
   {
@@ -573,7 +576,10 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
+      { name: "St Petersburg", lat: 59.93, lng: 30.32 },
+      { name: "Yekaterinburg", lat: 56.84, lng: 60.6 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
+      { name: "Tehran", lat: 35.69, lng: 51.39 },
       { name: "Pyongyang", lat: 39.03, lng: 125.73 },
     ],
   },
@@ -590,6 +596,8 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
+      { name: "Vladivostok", lat: 43.11, lng: 131.88 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
       { name: "Pyongyang", lat: 39.03, lng: 125.73 },
     ],
   },
@@ -605,7 +613,9 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
       { name: "Tehran", lat: 35.69, lng: 51.39 },
+      { name: "Pyongyang", lat: 39.03, lng: 125.73 },
     ],
   },
   {
@@ -620,7 +630,10 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
       { name: "Tehran", lat: 35.69, lng: 51.39 },
+      { name: "Pyongyang", lat: 39.03, lng: 125.73 },
+      { name: "Riyadh", lat: 24.71, lng: 46.68 },
     ],
   },
   {
@@ -752,6 +765,7 @@ export const facilities: Facility[] = [
   },
   // RUSSIA
   {
+    // European Russia — primary NATO Europe theater role
     name: "Kozelsk (60th Missile Div.)",
     country: "Russia",
     lat: 54.033,
@@ -762,13 +776,17 @@ export const facilities: Facility[] = [
     range: 11000,
     status: "Active",
     likelyTargets: [
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
+      { name: "Berlin", lat: 52.52, lng: 13.41 },
+      { name: "Brussels", lat: 50.85, lng: 4.35 },
+      { name: "Warsaw", lat: 52.23, lng: 21.01 },
+      { name: "Ramstein AFB", lat: 49.44, lng: 7.6 },
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
-      { name: "Chicago", lat: 41.88, lng: -87.63 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
     ],
   },
   {
+    // Volga region — Sarmat has global reach; mix of NATO Europe + US
     name: "Tatishchevo (60th Army)",
     country: "Russia",
     lat: 51.7,
@@ -779,13 +797,16 @@ export const facilities: Facility[] = [
     range: 18000,
     status: "Active",
     likelyTargets: [
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
+      { name: "Berlin", lat: 52.52, lng: 13.41 },
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
       { name: "New York", lat: 40.71, lng: -74.01 },
       { name: "Chicago", lat: 41.88, lng: -87.63 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
     ],
   },
   {
+    // South Urals crossroads — genuine mix of European, US, and Asian targets
     name: "Dombarovsky",
     country: "Russia",
     lat: 50.75,
@@ -796,13 +817,16 @@ export const facilities: Facility[] = [
     range: 16000,
     status: "Active",
     likelyTargets: [
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
       { name: "Chicago", lat: 41.88, lng: -87.63 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "New Delhi", lat: 28.61, lng: 77.21 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
   },
   {
+    // Central Siberia — polar arc to US is the primary route; secondary Pacific
     name: "Uzhur (62nd Missile Div.)",
     country: "Russia",
     lat: 55.3,
@@ -814,12 +838,15 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
       { name: "Chicago", lat: 41.88, lng: -87.63 },
       { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "Seattle", lat: 47.61, lng: -122.33 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
   },
   {
+    // West Siberia — central position; US via polar + some European reach
     name: "Novosibirsk (39th Div.)",
     country: "Russia",
     lat: 55.0,
@@ -831,12 +858,14 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
       { name: "Chicago", lat: 41.88, lng: -87.63 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
     ],
   },
   {
+    // European Russia, east of Moscow — primary NATO Europe theater
     name: "Yoshkar-Ola (14th Div.)",
     country: "Russia",
     lat: 56.6,
@@ -847,13 +876,17 @@ export const facilities: Facility[] = [
     range: 12000,
     status: "Active",
     likelyTargets: [
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
+      { name: "Berlin", lat: 52.52, lng: 13.41 },
+      { name: "Brussels", lat: 50.85, lng: 4.35 },
+      { name: "Warsaw", lat: 52.23, lng: 21.01 },
+      { name: "Ramstein AFB", lat: 49.44, lng: 7.6 },
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
-      { name: "Chicago", lat: 41.88, lng: -87.63 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
     ],
   },
   {
+    // Kola Peninsula — Arctic-facing; US East Coast across Atlantic + Nordic NATO flank
     name: "Gadzhiyevo (Northern Fleet)",
     country: "Russia",
     lat: 69.25,
@@ -865,8 +898,11 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "London", lat: 51.51, lng: -0.13 },
       { name: "New York", lat: 40.71, lng: -74.01 },
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Oslo", lat: 59.91, lng: 10.75 },
+      { name: "Reykjavik", lat: 64.13, lng: -21.93 },
+      { name: "Ottawa", lat: 45.42, lng: -75.69 },
     ],
   },
   {
@@ -880,9 +916,11 @@ export const facilities: Facility[] = [
     range: 11500,
     status: "Active",
     likelyTargets: [
-      { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "London", lat: 51.51, lng: -0.13 },
-      { name: "New York", lat: 40.71, lng: -74.01 },
+      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "San Francisco", lat: 37.77, lng: -122.42 },
+      { name: "Seattle", lat: 47.61, lng: -122.33 },
+      { name: "Honolulu", lat: 21.31, lng: -157.86 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
     ],
   },
   {
@@ -896,8 +934,12 @@ export const facilities: Facility[] = [
     range: 5500,
     status: "Active",
     likelyTargets: [
-      { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "Ramstein AFB Germany", lat: 49.44, lng: 7.6 },
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Paris", lat: 48.86, lng: 2.35 },
+      { name: "Berlin", lat: 52.52, lng: 13.41 },
+      { name: "Ramstein AFB", lat: 49.44, lng: 7.6 },
+      { name: "Warsaw", lat: 52.23, lng: 21.01 },
+      { name: "Rome", lat: 41.9, lng: 12.5 },
     ],
   },
   {
@@ -911,8 +953,10 @@ export const facilities: Facility[] = [
     range: 3000,
     status: "Active",
     likelyTargets: [
-      { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "Ramstein AFB Germany", lat: 49.44, lng: 7.6 },
+      { name: "Seattle", lat: 47.61, lng: -122.33 },
+      { name: "Anchorage", lat: 61.22, lng: -149.89 },
+      { name: "San Francisco", lat: 37.77, lng: -122.42 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
     ],
   },
   {
@@ -949,10 +993,12 @@ export const facilities: Facility[] = [
     range: 11200,
     status: "Active",
     likelyTargets: [
-      { name: "Washington DC", lat: 38.9, lng: -77.04 },
-      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "Taipei", lat: 25.03, lng: 121.57 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
       { name: "Guam", lat: 13.44, lng: 144.79 },
       { name: "New Delhi", lat: 28.61, lng: 77.21 },
+      { name: "Honolulu", lat: 21.31, lng: -157.86 },
+      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
     ],
   },
   {
@@ -967,8 +1013,11 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
+      { name: "Chicago", lat: 41.88, lng: -87.63 },
       { name: "Los Angeles", lat: 34.05, lng: -118.24 },
       { name: "Guam", lat: 13.44, lng: 144.79 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
+      { name: "Seoul", lat: 37.57, lng: 126.98 },
       { name: "New Delhi", lat: 28.61, lng: 77.21 },
     ],
   },
@@ -984,9 +1033,12 @@ export const facilities: Facility[] = [
     status: "Under Construction",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
+      { name: "Seattle", lat: 47.61, lng: -122.33 },
+      { name: "San Francisco", lat: 37.77, lng: -122.42 },
       { name: "Los Angeles", lat: 34.05, lng: -118.24 },
       { name: "Guam", lat: 13.44, lng: 144.79 },
-      { name: "New Delhi", lat: 28.61, lng: 77.21 },
+      { name: "Tokyo", lat: 35.68, lng: 139.69 },
+      { name: "London", lat: 51.51, lng: -0.13 },
     ],
   },
   {
@@ -1001,9 +1053,11 @@ export const facilities: Facility[] = [
     status: "Under Construction",
     likelyTargets: [
       { name: "Washington DC", lat: 38.9, lng: -77.04 },
+      { name: "New York", lat: 40.71, lng: -74.01 },
+      { name: "Chicago", lat: 41.88, lng: -87.63 },
       { name: "Los Angeles", lat: 34.05, lng: -118.24 },
-      { name: "Guam", lat: 13.44, lng: 144.79 },
-      { name: "New Delhi", lat: 28.61, lng: 77.21 },
+      { name: "London", lat: 51.51, lng: -0.13 },
+      { name: "Sydney", lat: -33.87, lng: 151.21 },
     ],
   },
   {
@@ -1019,7 +1073,10 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Guam", lat: 13.44, lng: 144.79 },
       { name: "Honolulu", lat: 21.31, lng: -157.86 },
+      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
       { name: "Tokyo", lat: 35.68, lng: 139.69 },
+      { name: "Seoul", lat: 37.57, lng: 126.98 },
+      { name: "Sydney", lat: -33.87, lng: 151.21 },
     ],
   },
   {
@@ -1033,9 +1090,12 @@ export const facilities: Facility[] = [
     range: 7400,
     status: "Active",
     likelyTargets: [
-      { name: "Guam", lat: 13.44, lng: 144.79 },
-      { name: "Honolulu", lat: 21.31, lng: -157.86 },
+      { name: "Taipei", lat: 25.03, lng: 121.57 },
+      { name: "Seoul", lat: 37.57, lng: 126.98 },
       { name: "Tokyo", lat: 35.68, lng: 139.69 },
+      { name: "Osaka", lat: 34.69, lng: 135.5 },
+      { name: "Kadena AB (Okinawa)", lat: 26.36, lng: 127.77 },
+      { name: "Guam", lat: 13.44, lng: 144.79 },
     ],
   },
   {
@@ -1062,10 +1122,13 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
+      { name: "St Petersburg", lat: 59.93, lng: 30.32 },
       { name: "Tehran", lat: 35.69, lng: 51.39 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
   },
   {
+    // Southern France — Mediterranean direction; non-NATO adversaries only
     name: "Istres-Le Tubé Air Base",
     country: "France",
     lat: 43.517,
@@ -1077,10 +1140,13 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
+      { name: "Kaliningrad", lat: 54.71, lng: 20.51 },
+      { name: "Tripoli", lat: 32.9, lng: 13.18 },
       { name: "Tehran", lat: 35.69, lng: 51.39 },
     ],
   },
   {
+    // Northern France — eastern-facing; non-NATO adversaries only
     name: "Saint-Dizier Air Base",
     country: "France",
     lat: 48.633,
@@ -1092,7 +1158,8 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
-      { name: "Tehran", lat: 35.69, lng: 51.39 },
+      { name: "St Petersburg", lat: 59.93, lng: 30.32 },
+      { name: "Kaliningrad", lat: 54.71, lng: 20.51 },
     ],
   },
   // UNITED KINGDOM
@@ -1109,6 +1176,9 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Moscow", lat: 55.75, lng: 37.62 },
       { name: "St Petersburg", lat: 59.93, lng: 30.32 },
+      { name: "Tehran", lat: 35.69, lng: 51.39 },
+      { name: "Pyongyang", lat: 39.03, lng: 125.73 },
+      { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
   },
   {
@@ -1146,6 +1216,8 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Islamabad", lat: 33.69, lng: 73.04 },
+      { name: "Lahore", lat: 31.55, lng: 74.34 },
+      { name: "Karachi", lat: 24.86, lng: 67.01 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
     ],
   },
@@ -1161,7 +1233,10 @@ export const facilities: Facility[] = [
     status: "Active",
     likelyTargets: [
       { name: "Islamabad", lat: 33.69, lng: 73.04 },
+      { name: "Karachi", lat: 24.86, lng: 67.01 },
       { name: "Beijing", lat: 39.9, lng: 116.4 },
+      { name: "Shanghai", lat: 31.23, lng: 121.47 },
+      { name: "Chengdu", lat: 30.57, lng: 104.06 },
     ],
   },
   {
@@ -1200,6 +1275,9 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "New Delhi", lat: 28.61, lng: 77.21 },
       { name: "Mumbai", lat: 19.08, lng: 72.88 },
+      { name: "Bangalore", lat: 12.97, lng: 77.59 },
+      { name: "Kolkata", lat: 22.57, lng: 88.36 },
+      { name: "Hyderabad", lat: 17.38, lng: 78.49 },
     ],
   },
   {
@@ -1210,7 +1288,7 @@ export const facilities: Facility[] = [
     type: "storage",
     missiles: "Shaheen / Ghauri",
     warheads: 0,
-    range: 2750,
+    range: 0,
     status: "Active",
   },
   {
@@ -1221,7 +1299,7 @@ export const facilities: Facility[] = [
     type: "storage",
     missiles: "Mobile TELs",
     warheads: 0,
-    range: 1500,
+    range: 0,
     status: "Suspected",
   },
   {
@@ -1244,7 +1322,7 @@ export const facilities: Facility[] = [
     type: "storage",
     missiles: "Estimated Jericho III",
     warheads: 90,
-    range: 6500,
+    range: 0,
     status: "Undeclared",
   },
   {
@@ -1260,6 +1338,10 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Tehran", lat: 35.69, lng: 51.39 },
       { name: "Damascus", lat: 33.51, lng: 36.29 },
+      { name: "Baghdad", lat: 33.34, lng: 44.4 },
+      { name: "Riyadh", lat: 24.71, lng: 46.68 },
+      { name: "Cairo", lat: 30.04, lng: 31.24 },
+      { name: "Moscow", lat: 55.75, lng: 37.62 },
     ],
   },
   {
@@ -1275,6 +1357,9 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Tehran", lat: 35.69, lng: 51.39 },
       { name: "Damascus", lat: 33.51, lng: 36.29 },
+      { name: "Baghdad", lat: 33.34, lng: 44.4 },
+      { name: "Riyadh", lat: 24.71, lng: 46.68 },
+      { name: "Cairo", lat: 30.04, lng: 31.24 },
     ],
   },
   // NORTH KOREA
@@ -1303,6 +1388,9 @@ export const facilities: Facility[] = [
       { name: "Seoul", lat: 37.57, lng: 126.98 },
       { name: "Tokyo", lat: 35.68, lng: 139.69 },
       { name: "Guam", lat: 13.44, lng: 144.79 },
+      { name: "Washington DC", lat: 38.9, lng: -77.04 },
+      { name: "Los Angeles", lat: 34.05, lng: -118.24 },
+      { name: "Chicago", lat: 41.88, lng: -87.63 },
     ],
   },
   {
@@ -1318,7 +1406,8 @@ export const facilities: Facility[] = [
     likelyTargets: [
       { name: "Seoul", lat: 37.57, lng: 126.98 },
       { name: "Tokyo", lat: 35.68, lng: 139.69 },
-      { name: "Guam", lat: 13.44, lng: 144.79 },
+      { name: "Osaka", lat: 34.69, lng: 135.5 },
+      { name: "Kadena AB (Okinawa)", lat: 26.36, lng: 127.77 },
     ],
   },
   {

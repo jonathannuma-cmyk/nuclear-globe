@@ -13,15 +13,10 @@ import {
   haversineDistanceKm,
   getThreateningCountries,
   facilities,
+  MAJOR_CITIES,
+  type MajorCity,
 } from "./data";
 import { createThreeScene, FilterType } from "./threeScene";
-
-export interface ThreatTargetPoint {
-  name: string;
-  country: string;
-  lat: number;
-  lng: number;
-}
 
 const TIMELINE_MIN = 1945;
 const TIMELINE_MAX = 2025;
@@ -45,7 +40,7 @@ function App() {
   const [year, setYear] = useState(TIMELINE_MAX);
   const [isPlaying, setIsPlaying] = useState(false);
   const [threatMode, setThreatMode] = useState(false);
-  const [threatTarget, setThreatTarget] = useState<ThreatTargetPoint | null>(null);
+  const [threatTarget, setThreatTarget] = useState<MajorCity | null>(null);
   const [rangeDomeVisible, setRangeDomeVisible] = useState(false);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const sceneApiRef =
@@ -77,10 +72,11 @@ function App() {
         setHoveredFacility(facility);
         setTooltipPos(pos);
       },
-      onGlobeClick: (lat, lng) => {
-        setThreatTarget({ name: "Selected point", country: "—", lat, lng });
+      onCityClick: (city) => {
+        setThreatTarget(city);
       },
     }, { initialCameraZ: 8 });
+    sceneApiRef.current.setCities(MAJOR_CITIES);
     return () => {
       sceneApiRef.current?.dispose();
       sceneApiRef.current = null;
@@ -197,6 +193,15 @@ function App() {
             <div style={{ marginTop: 2, opacity: 0.6 }}>
               DATA: FAS / SIPRI / NTI — EST. 2025
             </div>
+            <button
+              type="button"
+              className="sources-button"
+              onClick={() => setShowSources(true)}
+              aria-label="Open data sources and methodology"
+            >
+              <span>ℹ</span>
+              SOURCES
+            </button>
           </div>
         </header>
 
@@ -213,9 +218,7 @@ function App() {
             setThreatMode(active);
             if (!active) setThreatTarget(null);
           }}
-          selectedCity={
-            threatTarget && threatTarget.country !== "—" ? threatTarget : null
-          }
+          selectedCity={threatTarget}
           onSelectCity={(city) => setThreatTarget(city)}
           timelineYear={year}
         />
@@ -255,7 +258,9 @@ function App() {
         )}
 
         <div className="controls-hint">
-          Drag to rotate · Scroll to zoom · Click markers for details
+          {threatMode
+            ? "Drag to rotate · Scroll to zoom · Click a city marker for threat assessment"
+            : "Drag to rotate · Scroll to zoom · Click markers for details"}
         </div>
 
         <TimelineSlider
@@ -265,16 +270,6 @@ function App() {
           isPlaying={isPlaying}
           onPlayPause={() => setIsPlaying((p) => !p)}
         />
-
-        <button
-          type="button"
-          className="sources-button"
-          onClick={() => setShowSources(true)}
-          aria-label="Open data sources and methodology"
-        >
-          <span>ℹ</span>
-          SOURCES
-        </button>
 
         <DataSourcesModal
           open={showSources}

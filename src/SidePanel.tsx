@@ -104,7 +104,7 @@ export function SidePanel({
                   />
                   <div className="threat-city-dropdown">
                     <div className="threat-city-hint">
-                      {citySearch.trim() ? "Select a city" : "Type to search, or click the globe to drop a pin"}
+                      {citySearch.trim() ? "Select a city" : "Search or click a city marker on the globe"}
                     </div>
                     {filteredCities.slice(0, 50).map((city) => (
                       <button

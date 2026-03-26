@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { SidePanel } from "./SidePanel";
 import { DetailPanel } from "./DetailPanel";
 import { ThreatPanel } from "./ThreatPanel";
@@ -6,6 +6,7 @@ import { CountryBorders } from "./CountryBorders";
 import { TimelineSlider } from "./TimelineSlider";
 import { LandingScreen } from "./LandingScreen";
 import { DataSourcesModal } from "./DataSourcesModal";
+import { HistoricEventCard } from "./HistoricEventCard";
 import {
   Facility,
   TYPE_LABELS,
@@ -14,11 +15,14 @@ import {
   getThreateningCountries,
   facilities,
   MAJOR_CITIES,
+  HISTORIC_EVENTS,
   type MajorCity,
+  type HistoricEvent,
 } from "./data";
 import { createThreeScene, FilterType } from "./threeScene";
 
-const TIMELINE_MIN = 1945;
+const TIMELINE_MIN_NORMAL = 1945;
+const TIMELINE_MIN_HISTORIC = 1939;
 const TIMELINE_MAX = 2025;
 const PLAY_INTERVAL_MS = 200;
 
@@ -42,11 +46,21 @@ function App() {
   const [threatMode, setThreatMode] = useState(false);
   const [threatTarget, setThreatTarget] = useState<MajorCity | null>(null);
   const [rangeDomeVisible, setRangeDomeVisible] = useState(false);
+  const [historicMode, setHistoricMode] = useState(false);
+  const [closedEventId, setClosedEventId] = useState<string | null>(null);
+  const prevYearRef = useRef<number>(TIMELINE_MAX);
+  const lastFlashedYearRef = useRef<number | null>(null);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const sceneApiRef =
     useRef<ReturnType<typeof createThreeScene> | null>(null);
 
   const warheadStats = useMemo(() => getWarheadsForYear(year), [year]);
+
+  // Derived: which historic event falls on the current year (if any)
+  const currentHistoricEvent = useMemo<HistoricEvent | null>(() => {
+    if (!historicMode) return null;
+    return HISTORIC_EVENTS.find((e) => e.year === year) ?? null;
+  }, [historicMode, year]);
 
   const threateningFacilities = useMemo(() => {
     if (!threatTarget) return [];
@@ -129,21 +143,72 @@ function App() {
 
   useEffect(() => {
     if (!isPlaying) return;
+    const minYear = historicMode ? TIMELINE_MIN_HISTORIC : TIMELINE_MIN_NORMAL;
     const id = setInterval(() => {
       setYear((y) => {
         if (y >= TIMELINE_MAX) {
           setIsPlaying(false);
           return TIMELINE_MAX;
         }
+        if (y < minYear) return minYear;
         return y + 1;
       });
     }, PLAY_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [isPlaying]);
+  }, [isPlaying, historicMode]);
 
   useEffect(() => {
     setRangeDomeVisible(false);
   }, [selectedFacility]);
+
+  useEffect(() => {
+    sceneApiRef.current?.setHistoricMode(historicMode);
+    if (historicMode) {
+      setThreatMode(false);
+      setThreatTarget(null);
+      setSelectedFacility(null);
+    } else {
+      // Reset event tracking when exiting so events re-trigger on re-entry
+      lastFlashedYearRef.current = null;
+      setClosedEventId(null);
+    }
+  }, [historicMode]);
+
+  useEffect(() => {
+    if (historicMode) {
+      sceneApiRef.current?.setHistoricWarheads(warheadStats.byCountry);
+    }
+  }, [historicMode, warheadStats.byCountry]);
+
+  const handleHistoricModeChange = useCallback((active: boolean) => {
+    setHistoricMode(active);
+    if (active) {
+      setYear(TIMELINE_MIN_HISTORIC);
+      setIsPlaying(false);
+    } else {
+      setYear(TIMELINE_MAX);
+    }
+  }, []);
+
+  // Reset closed-event tracking and trigger flash + globe centering when year changes to an event year
+  useEffect(() => {
+    if (year !== prevYearRef.current) {
+      prevYearRef.current = year;
+      setClosedEventId(null);
+    }
+  }, [year]);
+
+  useEffect(() => {
+    if (!historicMode || !currentHistoricEvent) return;
+    // Only trigger globe effects once per year visit (not on every re-render)
+    if (lastFlashedYearRef.current === year) return;
+    lastFlashedYearRef.current = year;
+    const { lat, lng } = currentHistoricEvent;
+    if (lat !== undefined && lng !== undefined) {
+      sceneApiRef.current?.flashAt(lat, lng);
+      sceneApiRef.current?.centerGlobeOn(lat, lng);
+    }
+  }, [year, historicMode, currentHistoricEvent]);
 
   const handleCloseDetail = () => {
     sceneApiRef.current?.showRangeForFacility(null);
@@ -221,11 +286,12 @@ function App() {
           selectedCity={threatTarget}
           onSelectCity={(city) => setThreatTarget(city)}
           timelineYear={year}
+          historicMode={historicMode}
         />
 
         <CountryBorders getSceneApi={() => sceneApiRef.current} />
 
-        {threatMode && threatTarget ? (
+        {!historicMode && threatMode && threatTarget ? (
           <ThreatPanel
             targetCity={threatTarget}
             threateningFacilities={threateningFacilities}
@@ -234,7 +300,7 @@ function App() {
               setThreatTarget(null);
             }}
           />
-        ) : (
+        ) : !historicMode ? (
           <DetailPanel
             facility={selectedFacility}
             onClose={handleCloseDetail}
@@ -243,7 +309,7 @@ function App() {
             onHideRange={handleHideRange}
             onShowTargets={handleShowTargets}
           />
-        )}
+        ) : null}
 
         {hoveredFacility && tooltipPos && (
           <div
@@ -258,10 +324,19 @@ function App() {
         )}
 
         <div className="controls-hint">
-          {threatMode
+          {historicMode
+            ? "Drag to rotate · Scroll to zoom · Use Play to animate history"
+            : threatMode
             ? "Drag to rotate · Scroll to zoom · Click a city marker for threat assessment"
             : "Drag to rotate · Scroll to zoom · Click markers for details"}
         </div>
+
+        {currentHistoricEvent && currentHistoricEvent.id !== closedEventId && (
+          <HistoricEventCard
+            event={currentHistoricEvent}
+            onClose={() => setClosedEventId(currentHistoricEvent.id)}
+          />
+        )}
 
         <TimelineSlider
           year={year}
@@ -269,6 +344,8 @@ function App() {
           totalWarheads={warheadStats.total}
           isPlaying={isPlaying}
           onPlayPause={() => setIsPlaying((p) => !p)}
+          historicMode={historicMode}
+          onHistoricModeChange={handleHistoricModeChange}
         />
 
         <DataSourcesModal

@@ -24,6 +24,8 @@ export interface SidePanelProps {
   onSelectCity?: (city: MajorCity | null) => void;
   /** Timeline year; deployed aggregate only shown for {@link DEPLOYED_WARHEADS_DATA_YEAR}. */
   timelineYear?: number;
+  /** Historic mode: hides facility filter and threat panel; shows warhead history only. */
+  historicMode?: boolean;
 }
 
 export function SidePanel({
@@ -39,6 +41,7 @@ export function SidePanel({
   selectedCity = null,
   onSelectCity,
   timelineYear = DEPLOYED_WARHEADS_DATA_YEAR,
+  historicMode = false,
 }: SidePanelProps) {
   const [citySearch, setCitySearch] = useState("");
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
@@ -72,7 +75,16 @@ export function SidePanel({
 
   return (
     <div className="side-panel">
-      {onThreatModeChange && (
+      {historicMode && (
+        <div className="panel-card historic-mode-card">
+          <h3>Historic Mode</h3>
+          <div className="historic-mode-desc">
+            Showing nuclear arsenals from {timelineYear}. Country markers scale by warhead count.
+            Historical events appear as you move through time.
+          </div>
+        </div>
+      )}
+      {onThreatModeChange && !historicMode && (
         <div className="panel-card threat-toggle-card">
           <button
             type="button"
@@ -137,7 +149,7 @@ export function SidePanel({
         </div>
       )}
 
-      {!threatMode && (
+      {!threatMode && !historicMode && (
         <>
           <div className="panel-card">
             <h3>Global Overview</h3>
@@ -206,6 +218,22 @@ export function SidePanel({
             </div>
           </div>
         </>
+      )}
+      {historicMode && (
+        <div className="panel-card">
+          <h3>Nuclear States</h3>
+          <div className="country-list">
+            {sortedCountries.map(([country, count]) => (
+              <div key={country} className="country-item">
+                <div className="country-left">
+                  <div className="country-dot" style={{ background: COUNTRY_COLORS[country] }} />
+                  <div className="country-name">{country}</div>
+                </div>
+                <div className="country-count">{count > 0 ? count.toLocaleString() : "—"}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

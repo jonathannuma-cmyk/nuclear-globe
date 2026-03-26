@@ -4,6 +4,7 @@ import {
   FacilityType,
   facilities,
   COUNTRY_COLORS,
+  COUNTRY_CENTERS,
   latLngToVector3,
   vector3ToLatLng,
   SUBMARINE_PATROLS,
@@ -41,6 +42,9 @@ export interface SceneApi {
   setThreatArcs: (facilityList: Facility[]) => void;
   setThreatRangeDomes: (facilityList: Facility[]) => void;
   setCities: (cities: MajorCity[]) => void;
+  setHistoricMode: (active: boolean) => void;
+  setHistoricWarheads: (byCountry: Record<string, number>) => void;
+  flashAt: (lat: number, lng: number) => void;
   centerGlobeOn: (lat: number, lng: number) => void;
   scheduleAutoRotateResume: () => void;
   flyCameraToDefault: () => Promise<void>;
@@ -113,6 +117,16 @@ export function createThreeScene(
   let patrolGroup: THREE.Group | null = null;
   let cityMarkers: { mesh: THREE.Mesh; city: MajorCity }[] = [];
   let cityMarkersGroup: THREE.Group | null = null;
+  let historicMode = false;
+  let countryMarkersGroup: THREE.Group | null = null;
+  const countryMarkerItems: {
+    ring: THREE.Mesh;
+    pulse: THREE.Mesh;
+    outerRing: THREE.Mesh;
+    country: string;
+  }[] = [];
+  let flashGroup: THREE.Group | null = null;
+  const flashItems: { mesh: THREE.Mesh; startTime: number }[] = [];
   const patrolItems: {
     patrol: SubmarinePatrol;
     pathLine: THREE.Line;
@@ -359,6 +373,137 @@ export function createThreeScene(
     });
   }
 
+  function clearCountryMarkers() {
+    if (countryMarkersGroup && globe) {
+      globe.remove(countryMarkersGroup);
+      countryMarkersGroup.children.forEach((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry.dispose();
+          (child.material as THREE.Material).dispose();
+        }
+      });
+      countryMarkersGroup = null;
+    }
+    countryMarkerItems.length = 0;
+  }
+
+  function createCountryMarkersGroup() {
+    if (!globe) return;
+    clearCountryMarkers();
+    const group = new THREE.Group();
+    group.visible = false;
+    countryMarkersGroup = group;
+    globe.add(group);
+    const radius = 1.015;
+
+    Object.entries(COUNTRY_CENTERS).forEach(([country, center]) => {
+      const pos = latLngToVector3(center.lat, center.lng, radius);
+      const posVec = new THREE.Vector3(pos.x, pos.y, pos.z);
+      const color = new THREE.Color(COUNTRY_COLORS[country] || "#ffffff");
+
+      const outerRingGeo = new THREE.RingGeometry(0.04, 0.055, 32);
+      const outerRingMat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.DoubleSide,
+      });
+      const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+      outerRing.position.copy(posVec);
+      outerRing.lookAt(posVec.clone().multiplyScalar(2));
+      group.add(outerRing);
+
+      const ringGeo = new THREE.RingGeometry(0.018, 0.032, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.6,
+        side: THREE.DoubleSide,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(posVec);
+      ring.lookAt(posVec.clone().multiplyScalar(2));
+      group.add(ring);
+
+      const pulseGeo = new THREE.RingGeometry(0.016, 0.022, 32);
+      const pulseMat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.5,
+        side: THREE.DoubleSide,
+      });
+      const pulse = new THREE.Mesh(pulseGeo, pulseMat);
+      pulse.position.copy(posVec);
+      pulse.lookAt(posVec.clone().multiplyScalar(2));
+      group.add(pulse);
+
+      countryMarkerItems.push({ ring, pulse, outerRing, country });
+    });
+  }
+
+  function updateCountryMarkerScales(byCountry: Record<string, number>) {
+    const counts = countryMarkerItems.map((m) => byCountry[m.country] ?? 0);
+    const max = Math.max(...counts, 1);
+    countryMarkerItems.forEach((item, i) => {
+      const count = counts[i];
+      if (count === 0) {
+        item.ring.visible = false;
+        item.pulse.visible = false;
+        item.outerRing.visible = false;
+        return;
+      }
+      item.ring.visible = true;
+      item.pulse.visible = true;
+      item.outerRing.visible = true;
+      // Logarithmic scaling: small arsenals still visible
+      const logScale = Math.log(count + 1) / Math.log(max + 1);
+      const s = 0.35 + logScale * 0.65;
+      item.ring.scale.set(s, s, 1);
+      item.outerRing.scale.set(s, s, 1);
+    });
+  }
+
+  function flashAtImpl(lat: number, lng: number) {
+    if (!globe) return;
+    if (!flashGroup) {
+      flashGroup = new THREE.Group();
+      globe.add(flashGroup);
+    }
+    const pos = latLngToVector3(lat, lng, 1.015);
+    const posVec = new THREE.Vector3(pos.x, pos.y, pos.z);
+    const geo = new THREE.RingGeometry(0.0, 0.025, 32);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0xfbbf24,
+      transparent: true,
+      opacity: 0.9,
+      side: THREE.DoubleSide,
+    });
+    const ring = new THREE.Mesh(geo, mat);
+    ring.position.copy(posVec);
+    ring.lookAt(posVec.clone().multiplyScalar(2));
+    flashGroup.add(ring);
+    flashItems.push({ mesh: ring, startTime: Date.now() });
+  }
+
+  function updateFlashItems() {
+    const now = Date.now();
+    for (let i = flashItems.length - 1; i >= 0; i--) {
+      const item = flashItems[i];
+      const elapsed = (now - item.startTime) / 1800;
+      if (elapsed >= 1) {
+        flashGroup?.remove(item.mesh);
+        item.mesh.geometry.dispose();
+        (item.mesh.material as THREE.Material).dispose();
+        flashItems.splice(i, 1);
+      } else {
+        const s = 1 + elapsed * 4;
+        item.mesh.scale.set(s, s, 1);
+        const mat = item.mesh.material as THREE.MeshBasicMaterial;
+        mat.opacity = 0.9 * (1 - elapsed);
+      }
+    }
+  }
+
   function updatePatrolVisibility() {
     if (!patrolGroup) return;
     const show =
@@ -415,12 +560,13 @@ export function createThreeScene(
 
   function updatePointVisibility() {
     points.forEach((p) => {
-      const vis = isVisible(p.facility) && p.yearScale > 0;
+      const vis = !historicMode && isVisible(p.facility) && p.yearScale > 0;
       p.ring.visible = vis;
       p.dot.visible = vis;
       p.pulse.visible = vis;
     });
-    updatePatrolVisibility();
+    if (patrolGroup) patrolGroup.visible = !historicMode;
+    if (!historicMode) updatePatrolVisibility();
   }
 
   function clearRangeDomes() {
@@ -1004,6 +1150,19 @@ export function createThreeScene(
         mat.opacity = 0.4 * (1 - (scale / p.yearScale - 1) / 0.8);
       }
     });
+    if (historicMode) {
+      countryMarkerItems.forEach((item, i) => {
+        if (!item.pulse.visible) return;
+        const baseScale = item.ring.scale.x;
+        const pulseScale = baseScale * (1 + Math.sin(time * 1.5 + i * 0.8) * 0.6);
+        item.pulse.scale.set(pulseScale, pulseScale, 1);
+        const mat = item.pulse.material as THREE.MeshBasicMaterial;
+        mat.opacity = 0.45 * (1 - Math.abs(Math.sin(time * 1.5 + i * 0.8)) * 0.5);
+        const outerScale = baseScale * (1 + Math.sin(time * 0.8 + i * 0.6) * 0.15);
+        item.outerRing.scale.set(outerScale, outerScale, 1);
+      });
+    }
+    updateFlashItems();
     if (targetArcsGroup) {
       targetArcsGroup.children.forEach((child) => {
         if (child instanceof THREE.Mesh && (child.userData as { isTargetDiamond?: boolean }).isTargetDiamond) {
@@ -1043,6 +1202,7 @@ export function createThreeScene(
   createGlobe();
   createFacilityPoints();
   createPatrolVisuals();
+  createCountryMarkersGroup();
   createAtmosphere();
   setupLights();
   setupEvents();
@@ -1064,6 +1224,33 @@ export function createThreeScene(
     },
     setCities(cities: MajorCity[]) {
       createCityMarkers(cities);
+    },
+    setHistoricMode(active: boolean) {
+      historicMode = active;
+      if (active) {
+        // Clear threat / selection state
+        clearRangeDomes();
+        clearTargetArcs();
+        clearThreatMarker();
+        clearThreatArcs();
+        if (cityMarkersGroup) cityMarkersGroup.visible = false;
+        if (countryMarkersGroup) countryMarkersGroup.visible = true;
+        if (autoRotateResumeTimeoutId) {
+          clearTimeout(autoRotateResumeTimeoutId);
+          autoRotateResumeTimeoutId = null;
+        }
+        autoRotate = true;
+      } else {
+        if (countryMarkersGroup) countryMarkersGroup.visible = false;
+        autoRotate = true;
+      }
+      updatePointVisibility();
+    },
+    setHistoricWarheads(byCountry: Record<string, number>) {
+      updateCountryMarkerScales(byCountry);
+    },
+    flashAt(lat: number, lng: number) {
+      flashAtImpl(lat, lng);
     },
     addCountryBorders,
     showRangeForFacility(facility: Facility | null) {
@@ -1120,6 +1307,7 @@ export function createThreeScene(
       clearThreatMarker();
       clearThreatArcs();
       clearCountryBorders();
+      clearCountryMarkers();
       if (patrolGroup && globe) {
         patrolItems.forEach((item) => {
           item.pathLine.geometry.dispose();

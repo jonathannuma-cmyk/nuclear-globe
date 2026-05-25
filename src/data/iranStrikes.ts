@@ -47,44 +47,354 @@ export interface DailyStrikeData {
 }
 
 export const DAILY_STRIKE_DATA: DailyStrikeData[] = [
-  { date: "2026-02-28", day: 1,  iranOnIsrael: 50, iranOnGulf: 35, usIsraelOnIran: 150, shippingAttacks: 3, notes: "Day 1: Operation Epic Fury + True Promise IV. Khamenei killed. 1,000+ targets." },
-  { date: "2026-03-01", day: 2,  iranOnIsrael: 40, iranOnGulf: 30, usIsraelOnIran: 72,  shippingAttacks: 5, notes: "Beit Shemesh: 9 killed. Dubai/Doha/Bahrain hit. 72 strikes across 20 Iranian provinces." },
-  { date: "2026-03-02", day: 3,  iranOnIsrael: 25, iranOnGulf: 20, usIsraelOnIran: 56,  shippingAttacks: 2, notes: "56 strikes in 13 provinces. Natanz entrance damaged. Iranian fire declining." },
-  { date: "2026-03-03", day: 4,  iranOnIsrael: 15, iranOnGulf: 12, usIsraelOnIran: 50,  shippingAttacks: 2, notes: "300 Iranian launchers destroyed. 200+ air defense systems hit. 70% drop in Iranian fire." },
-  { date: "2026-03-04", day: 5,  iranOnIsrael: 8,  iranOnGulf: 8,  usIsraelOnIran: 45,  shippingAttacks: 1, notes: "Iranian missile attacks down ~90% from Day 1. Drone attacks down ~83%." },
-  { date: "2026-03-05", day: 6,  iranOnIsrael: 6,  iranOnGulf: 6,  usIsraelOnIran: 40,  shippingAttacks: 2, notes: "30+ Iranian naval vessels destroyed. Navy declared 'combat ineffective.'" },
-  { date: "2026-03-06", day: 7,  iranOnIsrael: 5,  iranOnGulf: 5,  usIsraelOnIran: 35,  shippingAttacks: 1, notes: "B-2 strikes on underground hardened sites." },
-  { date: "2026-03-07", day: 8,  iranOnIsrael: 4,  iranOnGulf: 4,  usIsraelOnIran: 30,  shippingAttacks: 2, notes: "Cumulative 13 shipping attacks. US destroyed 16 Iranian minelayers." },
-  { date: "2026-03-08", day: 9,  iranOnIsrael: 4,  iranOnGulf: 3,  usIsraelOnIran: 28,  shippingAttacks: 1 },
-  { date: "2026-03-09", day: 10, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 30,  shippingAttacks: 1 },
-  { date: "2026-03-10", day: 11, iranOnIsrael: 5,  iranOnGulf: 4,  usIsraelOnIran: 45,  shippingAttacks: 2, notes: "One of most intense US/Israeli strike days. 5,500+ cumulative targets hit." },
-  { date: "2026-03-11", day: 12, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 25,  shippingAttacks: 1 },
-  { date: "2026-03-12", day: 13, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 22,  shippingAttacks: 1 },
-  { date: "2026-03-13", day: 14, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 20,  shippingAttacks: 1 },
-  { date: "2026-03-14", day: 15, iranOnIsrael: 4,  iranOnGulf: 3,  usIsraelOnIran: 22,  shippingAttacks: 1 },
-  { date: "2026-03-15", day: 16, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 20,  shippingAttacks: 1 },
-  { date: "2026-03-16", day: 17, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 18,  shippingAttacks: 0 },
-  { date: "2026-03-17", day: 18, iranOnIsrael: 8,  iranOnGulf: 5,  usIsraelOnIran: 30,  shippingAttacks: 1, notes: "Larijani + Basij chief killed. Iran retaliates: 2 killed in Ramat Gan. Israel invades S. Lebanon." },
-  { date: "2026-03-18", day: 19, iranOnIsrael: 10, iranOnGulf: 12, usIsraelOnIran: 35,  shippingAttacks: 2, notes: "MAJOR ESCALATION: South Pars gas field struck. Iran hits Qatar LNG facility." },
-  { date: "2026-03-19", day: 20, iranOnIsrael: 5,  iranOnGulf: 5,  usIsraelOnIran: 22,  shippingAttacks: 1 },
-  { date: "2026-03-20", day: 21, iranOnIsrael: 5,  iranOnGulf: 4,  usIsraelOnIran: 25,  shippingAttacks: 2, notes: "Diego Garcia IRBM attempt — 4,000km range. One failed, one intercepted." },
-  { date: "2026-03-21", day: 22, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 18,  shippingAttacks: 1 },
-  { date: "2026-03-22", day: 23, iranOnIsrael: 12, iranOnGulf: 5,  usIsraelOnIran: 20,  shippingAttacks: 1, notes: "Arad/Dimona: cluster munitions used. 180+ wounded. Strikes near Israeli nuclear site." },
-  { date: "2026-03-23", day: 24, iranOnIsrael: 4,  iranOnGulf: 3,  usIsraelOnIran: 18,  shippingAttacks: 1 },
-  { date: "2026-03-24", day: 25, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 15,  shippingAttacks: 1 },
-  { date: "2026-03-25", day: 26, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 15,  shippingAttacks: 0 },
-  { date: "2026-03-26", day: 27, iranOnIsrael: 5,  iranOnGulf: 4,  usIsraelOnIran: 18,  shippingAttacks: 1, notes: "IRGC naval commander Tangsiri killed. Iran intensifies retaliatory fire." },
-  { date: "2026-03-27", day: 28, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 12,  shippingAttacks: 1 },
-  { date: "2026-03-28", day: 29, iranOnIsrael: 3,  iranOnGulf: 2,  usIsraelOnIran: 12,  shippingAttacks: 1, notes: "Cumulative 21-24 shipping attacks in Strait of Hormuz / Gulf of Oman." },
-  { date: "2026-03-29", day: 30, iranOnIsrael: 2,  iranOnGulf: 2,  usIsraelOnIran: 10,  shippingAttacks: 0 },
-  { date: "2026-03-30", day: 31, iranOnIsrael: 2,  iranOnGulf: 1,  usIsraelOnIran: 10,  shippingAttacks: 1 },
-  { date: "2026-03-31", day: 32, iranOnIsrael: 2,  iranOnGulf: 1,  usIsraelOnIran: 8,   shippingAttacks: 0 },
-  { date: "2026-04-01", day: 33, iranOnIsrael: 2,  iranOnGulf: 1,  usIsraelOnIran: 8,   shippingAttacks: 0, notes: "Day 33. Cumulative deaths >2,300 region-wide including ~1,300 Iranian civilians." },
-  { date: "2026-04-02", day: 34, iranOnIsrael: 2,  iranOnGulf: 1,  usIsraelOnIran: 8,   shippingAttacks: 0 },
+  { date: "2026-02-28", day: 1,  iranOnIsrael: 50, iranOnGulf: 35, usIsraelOnIran: 900,  shippingAttacks: 3, notes: "Day 1: Operation Epic Fury. ~900 strikes in 12 hrs (CENTCOM). Khamenei killed. HRANA: 72 verified in 20 provinces (limited by comms blackout)." },
+  { date: "2026-03-01", day: 2,  iranOnIsrael: 40, iranOnGulf: 30, usIsraelOnIran: 664,  shippingAttacks: 5, notes: "HRANA: 664 attacks in 28 provinces. Beit Shemesh: 9 killed. Port Shuaiba: 6 US killed. Gulf-wide expansion." },
+  { date: "2026-03-02", day: 3,  iranOnIsrael: 25, iranOnGulf: 20, usIsraelOnIran: 640,  shippingAttacks: 2, notes: "HRANA: 640 strikes in 17 provinces, 68 casualties. Hezbollah enters war. Malek-Ashtar building destroyed." },
+  { date: "2026-03-03", day: 4,  iranOnIsrael: 15, iranOnGulf: 12, usIsraelOnIran: 104,  shippingAttacks: 2, notes: "HRANA: 104 attacks in 19 provinces, 31 casualties. IRIB HQ & Parliament struck. Air defense collapse begins." },
+  { date: "2026-03-04", day: 5,  iranOnIsrael: 8,  iranOnGulf: 8,  usIsraelOnIran: 200,  shippingAttacks: 1, notes: "~200 estimated. IRIS Dena sunk. Hezbollah missile at Tel Aviv. Israel launches 250+ strikes on Lebanon." },
+  { date: "2026-03-05", day: 6,  iranOnIsrael: 6,  iranOnGulf: 6,  usIsraelOnIran: 180,  shippingAttacks: 2, notes: "~180 estimated. Iranian Navy declared combat ineffective. IRIS Soleimani sunk." },
+  { date: "2026-03-06", day: 7,  iranOnIsrael: 5,  iranOnGulf: 5,  usIsraelOnIran: 350,  shippingAttacks: 1, notes: "~350 estimated. Tehran surge — heaviest bombing of capital. Al Jazeera bureau felt shockwaves. 20 killed in Shiraz." },
+  { date: "2026-03-07", day: 8,  iranOnIsrael: 4,  iranOnGulf: 4,  usIsraelOnIran: 485,  shippingAttacks: 2, notes: "HRANA: 485 strikes in 30 provinces. First oil facility strikes. Bahrain desal plant hit." },
+  { date: "2026-03-08", day: 9,  iranOnIsrael: 12, iranOnGulf: 8,  usIsraelOnIran: 300,  shippingAttacks: 1, notes: "~300 estimated. 80+ IAF jets, 230 munitions on Tehran. Oil depots hit. Brent crosses $100. Quds Force commanders killed in Beirut." },
+  { date: "2026-03-09", day: 10, iranOnIsrael: 12, iranOnGulf: 6,  usIsraelOnIran: 285,  shippingAttacks: 1, notes: "HRANA: 285 strikes in 17 provinces, 61 casualties. Resalat Tehran: 40+ killed. Yehud cluster: 2 killed. Ramla kindergarten hit." },
+  { date: "2026-03-10", day: 11, iranOnIsrael: 10, iranOnGulf: 8,  usIsraelOnIran: 250,  shippingAttacks: 2, notes: "~250 estimated. NATO shoots down missile over Turkey. Gulf-wide intercepts. 5,500+ cumulative targets." },
+  { date: "2026-03-11", day: 12, iranOnIsrael: 8,  iranOnGulf: 6,  usIsraelOnIran: 200,  shippingAttacks: 1, notes: "~200 estimated. Sustained campaign across provinces." },
+  { date: "2026-03-12", day: 13, iranOnIsrael: 7,  iranOnGulf: 5,  usIsraelOnIran: 180,  shippingAttacks: 2, notes: "~180 estimated. Shiraz Electronics Industries hit. Tanker Prima struck in Hormuz. Shoham cluster munitions." },
+  { date: "2026-03-13", day: 14, iranOnIsrael: 7,  iranOnGulf: 5,  usIsraelOnIran: 250,  shippingAttacks: 1, notes: "~250 estimated. Kharg Island first strike (~90 military targets). KC-135 crash in Iraq: 6 killed." },
+  { date: "2026-03-14", day: 15, iranOnIsrael: 8,  iranOnGulf: 6,  usIsraelOnIran: 285,  shippingAttacks: 1, notes: "HRANA: 285 strikes in 18 provinces. Space Research Center hit. Fujairah hub fire. US Embassy Baghdad struck." },
+  { date: "2026-03-15", day: 16, iranOnIsrael: 7,  iranOnGulf: 5,  usIsraelOnIran: 250,  shippingAttacks: 1, notes: "~250 estimated. Isfahan: 15 killed. 10,000+ homes damaged. Jalali Nasab killed. Death toll passes 1,400." },
+  { date: "2026-03-16", day: 17, iranOnIsrael: 6,  iranOnGulf: 4,  usIsraelOnIran: 300,  shippingAttacks: 0, notes: "HRANA: ~300+ estimated. 21 civilians killed, 31 injured. CENTCOM: 6,000+ locations targeted." },
+  { date: "2026-03-17", day: 18, iranOnIsrael: 10, iranOnGulf: 5,  usIsraelOnIran: 250,  shippingAttacks: 1, notes: "~250 estimated. Larijani & Basij chief killed. Ramat Gan cluster: 2 killed. Israel invades S. Lebanon." },
+  { date: "2026-03-18", day: 19, iranOnIsrael: 12, iranOnGulf: 15, usIsraelOnIran: 300,  shippingAttacks: 2, notes: "~300 estimated. MAJOR ESCALATION: South Pars struck. Iran hits Qatar LNG. Intel Minister Khatib killed. First Caspian Sea strikes." },
+  { date: "2026-03-19", day: 20, iranOnIsrael: 8,  iranOnGulf: 6,  usIsraelOnIran: 200,  shippingAttacks: 1, notes: "IDF: 200+ targets struck. BAZAN Haifa refinery hit. US F-35 emergency landing." },
+  { date: "2026-03-20", day: 21, iranOnIsrael: 8,  iranOnGulf: 5,  usIsraelOnIran: 180,  shippingAttacks: 2, notes: "~180 estimated. Diego Garcia IRBM attempt. PMF strikes in Salah al-Din." },
+  { date: "2026-03-21", day: 22, iranOnIsrael: 15, iranOnGulf: 8,  usIsraelOnIran: 250,  shippingAttacks: 1, notes: "~250 estimated. Natanz bunker busters. Dimona/Arad: 190+ injured. Mina al-Ahmadi refinery fire." },
+  { date: "2026-03-22", day: 23, iranOnIsrael: 16, iranOnGulf: 8,  usIsraelOnIran: 350,  shippingAttacks: 1, notes: "'Unprecedented' Tehran strikes (Al Jazeera). Cluster munitions on Jaffa/Petah Tikva/Bat Yam/Holon. Hezbollah record 85 waves. Death toll passes 1,500." },
+  { date: "2026-03-23", day: 24, iranOnIsrael: 16, iranOnGulf: 20, usIsraelOnIran: 300,  shippingAttacks: 1, notes: "~300 estimated. JINSA: 16 missiles + 60 drones from Iran. 36 drones at Bahrain. IRGC Al-Ghadir HQ in Yazd struck." },
+  { date: "2026-03-24", day: 25, iranOnIsrael: 9,  iranOnGulf: 12, usIsraelOnIran: 350,  shippingAttacks: 1, notes: "IAF: 120+ munitions on Isfahan (primary explosives factory). Woman killed near Mahanayim. Kuwait airport fuel tank fire." },
+  { date: "2026-03-25", day: 26, iranOnIsrael: 7,  iranOnGulf: 15, usIsraelOnIran: 664,  shippingAttacks: 0, notes: "HRANA: 664 attacks in 28 provinces. 7 missile waves at Israel. Abu Dhabi debris kills 2. CENTCOM: 10,000+ targets struck." },
+  { date: "2026-03-26", day: 27, iranOnIsrael: 5,  iranOnGulf: 6,  usIsraelOnIran: 250,  shippingAttacks: 1, notes: "~250 estimated. IRGC naval commander Tangsiri killed. Hormuz architect eliminated." },
+  { date: "2026-03-27", day: 28, iranOnIsrael: 8,  iranOnGulf: 10, usIsraelOnIran: 200,  shippingAttacks: 1, notes: "~200 estimated. Prince Sultan: E-3 destroyed, 15 US wounded. Arak/Ardakan nuclear sites hit. B-52s over Iran. Tel Aviv civilian killed. Hormuz formally closed." },
+  { date: "2026-03-28", day: 29, iranOnIsrael: 6,  iranOnGulf: 12, usIsraelOnIran: 701,  shippingAttacks: 1, notes: "HRANA: 701 attacks in 21 provinces, 173 casualties. Houthis enter war. BAPCO/ALBA hit. 11,000+ cumulative targets." },
+  { date: "2026-03-29", day: 30, iranOnIsrael: 5,  iranOnGulf: 8,  usIsraelOnIran: 500,  shippingAttacks: 0, notes: "~500 estimated (70% on Tehran per HRANA). Sohar Oman: 2 killed. Kuwait desal: 1 killed. Zanjan: 5 killed." },
+  { date: "2026-03-30", day: 31, iranOnIsrael: 4,  iranOnGulf: 6,  usIsraelOnIran: 400,  shippingAttacks: 1, notes: "~400 estimated. Tehran blackout. BAZAN hit again. Imam Hossein University struck. Ne'ot Hovav chemical plant hit. 4th NATO intercept over Turkey." },
+  { date: "2026-03-31", day: 32, iranOnIsrael: 4,  iranOnGulf: 5,  usIsraelOnIran: 350,  shippingAttacks: 1, notes: "~350 estimated. Al Salmi tanker hit at Dubai port. Missile factories + underground missile city in Isfahan struck. Hezbollah Unit 1800 deputy killed." },
+  { date: "2026-04-01", day: 33, iranOnIsrael: 3,  iranOnGulf: 4,  usIsraelOnIran: 300,  shippingAttacks: 0, notes: "~300 estimated. Cluster munitions on Bnei Brak/Tel Aviv. Kuwait airport fuel fire. Shahid Beheshti University struck." },
+  { date: "2026-04-02", day: 34, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 250,  shippingAttacks: 0, notes: "~250 estimated. Karaj B1 bridge collapsed: 8 killed, 95 wounded. Petah Tikva drone factory hit." },
+  { date: "2026-04-03", day: 35, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 200,  shippingAttacks: 0, notes: "~200 estimated. F-15E (Dude 44) shot down — first manned US aircraft downed. A-10 also hit. Massive rescue operation." },
+  { date: "2026-04-04", day: 36, iranOnIsrael: 3,  iranOnGulf: 3,  usIsraelOnIran: 180,  shippingAttacks: 0, notes: "~180 estimated. Bushehr NPP auxiliary building. Mahshahr petrochemicals: 5 killed, 170 injured. HaKirya fragment." },
+  { date: "2026-04-05", day: 37, iranOnIsrael: 3,  iranOnGulf: 4,  usIsraelOnIran: 180,  shippingAttacks: 0, notes: "~180 estimated. F-15E WSO rescued. Ali Al Salem: 15 US wounded. Haifa building collapse: 4 killed." },
+  { date: "2026-04-06", day: 38, iranOnIsrael: 4,  iranOnGulf: 5,  usIsraelOnIran: 250,  shippingAttacks: 0, notes: "~250 estimated. South Pars petrochem: 85% exports offline. Khademi killed. Sharif/synagogue: 34 killed incl 6 children." },
+  { date: "2026-04-07", day: 39, iranOnIsrael: 3,  iranOnGulf: 4,  usIsraelOnIran: 200,  shippingAttacks: 0, notes: "~200 estimated. Kharg Island re-strikes. Pardis/Kashan bridges. Jubail hit. Ceasefire announced late evening." },
+  { date: "2026-04-08", day: 40, iranOnIsrael: 1,  iranOnGulf: 3,  usIsraelOnIran: 50,   shippingAttacks: 0, notes: "Ceasefire takes effect. Gulf strikes continued despite ceasefire. Operation Eternal Darkness: ~100 Israeli strikes on Lebanon." },
 ];
 
 export const IRAN_STRIKES: IranStrike[] = [
   // ── 2026 Iran War (reverse chronological) ────────────────────────────────
+
+  {
+    id: "may15-lebanon-45day-extension",
+    codename: "Israel-Lebanon Ceasefire Extended",
+    date: "May 15, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israel-Lebanon Ceasefire Extended 45 Days After Washington Talks",
+    description:
+      "Following 2 days of 'highly-productive' Washington peace talks, Israel and Lebanon agreed to extend their ceasefire by 45 days. Framework established for negotiations on lasting peace, sovereignty recognition, and border security. Fourth round of negotiations set for June 2–3. Separate Pentagon security track established. Sources: State Department, MS NOW.",
+    launchOrigins: [],
+    targets: [
+      { lat: 38.8951, lng: -77.0364, label: "Washington D.C. — ceasefire extension agreement" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "Israel-Lebanon ceasefire extended 45 days. Framework for lasting peace established. Fourth negotiation round set June 2–3. Pentagon security track opened. Sources: State Department, MS NOW.",
+  },
+
+  {
+    id: "may15-harouf-airstrike",
+    codename: "Israeli Strike on Harouf",
+    date: "May 15, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israeli Strike Kills 6 in Harouf — 3 Paramedics Among Dead",
+    description:
+      "Israeli airstrike targeted the town of Harouf in southern Lebanon, killing at least 6 people including 3 paramedics. 657+ killed by Israeli attacks in Lebanon since the Apr 16 ceasefire began, per Lebanese Health Ministry. Sources: Lebanese Health Ministry, MS NOW.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.4000, lng: 35.4833, label: "Harouf, southern Lebanon" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "6 killed including 3 paramedics. 657+ total killed in Lebanon since Apr 16 ceasefire. Sources: Lebanese Health Ministry, MS NOW.",
+  },
+
+  {
+    id: "may7-uss-truxtun-mason",
+    codename: "Hormuz Naval Engagement",
+    date: "May 7, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Thwarts Iran Attacks on USS Truxtun & USS Mason — Strikes Iranian Facilities",
+    description:
+      "USS Truxtun and USS Mason, supported by Apache helicopters and other aircraft, faced a sustained barrage of small boats, missiles, and drones in the Strait of Hormuz. No US ships were hit. US struck Iranian military facilities in response. Iran called it a 'hostile' ceasefire violation. Sources: CBS News, Euronews, CENTCOM.",
+    launchOrigins: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — IRGC small boats, missiles, drones" },
+    ],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — USS Truxtun & USS Mason (defended)" },
+    ],
+    munitions: "Small boats, ballistic missiles, Shahed drones (Iranian); Apaches and aircraft (US response)",
+    outcome:
+      "No US ships hit. US struck Iranian military facilities in response. Iran condemned as ceasefire violation. Sources: CBS News, Euronews, CENTCOM.",
+  },
+
+  {
+    id: "may4-uae-lavan-island",
+    codename: "UAE Strike on Lavan Island",
+    date: "May 4, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "UAE Mirage Jets Suspected in Lavan Island Refinery Strike",
+    description:
+      "Wall Street Journal and other outlets reported the UAE launched strikes on Iran's Lavan Island oil refinery in early April. UAE Mirage 2000-9 fighter jets were suspected by Iranian military sources and open-source analysts. UAE confirmed Mirages were scrambled but did not confirm or deny the attack. Marks the first acknowledged Arab Gulf state strike on Iran. Sources: Wall Street Journal, Al Jazeera, Eurasian Times.",
+    launchOrigins: [
+      { lat: 24.4539, lng: 54.3773, label: "UAE — Mirage 2000-9 fighters (suspected)" },
+    ],
+    targets: [
+      { lat: 26.8167, lng: 53.3667, label: "Lavan Island oil refinery, Iran" },
+    ],
+    munitions: "UAE Mirage 2000-9 air-launched munitions (suspected; unconfirmed)",
+    outcome:
+      "Refinery damage reported; not officially confirmed. UAE neither confirmed nor denied the strike. First acknowledged Arab Gulf state attack on Iranian territory. Sources: Wall Street Journal, Al Jazeera, Eurasian Times.",
+  },
+
+  {
+    id: "apr28-majdal-zoun",
+    codename: "Double-Tap Strike — Majdal Zoun",
+    date: "Apr 28, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israeli Double-Tap Strike Kills 9 in Majdal Zoun",
+    description:
+      "Israeli forces launched a double-tap strike in Majdal Zoun, southern Lebanon, killing 9 people including 3 emergency workers. A major violation of the Apr 16 ceasefire. Sources: Lebanese Health Ministry.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.1167, lng: 35.1500, label: "Majdal Zoun, southern Lebanon" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "9 killed including 3 emergency workers. Major violation of Apr 16 ceasefire. Sources: Lebanese Health Ministry.",
+  },
+
+  {
+    id: "apr26-southern-lebanon",
+    codename: "Israeli Strikes Southern Lebanon",
+    date: "Apr 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "14 Killed in Israeli Strikes on Southern Lebanon Despite Ceasefire",
+    description:
+      "Lebanese Health Ministry reported 14 killed (including 2 women and 2 children) and 37 injured by Israeli attacks in southern Lebanon during the ceasefire period. Sources: Lebanese Health Ministry via NPR.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.2720, lng: 35.2080, label: "Southern Lebanon" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "14 killed including 2 women and 2 children. 37 injured. Strikes occurred during active ceasefire. Sources: Lebanese Health Ministry via NPR.",
+  },
+
+  {
+    id: "apr23-lebanon-ceasefire-extended",
+    codename: "Israel-Lebanon Ceasefire Extended",
+    date: "Apr 23, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israel-Lebanon Ceasefire Extended Three Weeks",
+    description:
+      "Trump announced Israel and Lebanon agreed to a three-week extension of their ceasefire. Direct talks between Israel and Lebanon continued. Sources: NPR.",
+    launchOrigins: [],
+    targets: [
+      { lat: 33.8938, lng: 35.5018, label: "Beirut — ceasefire extension" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "Three-week ceasefire extension agreed between Israel and Lebanon. Direct talks ongoing. Sources: NPR.",
+  },
+
+  {
+    id: "apr21-trump-extends-ceasefire",
+    codename: "US-Iran Ceasefire Extended Indefinitely",
+    date: "Apr 21, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Trump Extends US-Iran Ceasefire Indefinitely",
+    description:
+      "Trump announced he extended the Iran truce indefinitely 'to allow time for an Iranian proposal to be submitted at Pakistan's request.' On Apr 22, US officials said Trump gave Iran 3–5 days to engage in negotiations before resuming attacks. Sources: Wikipedia (2026 Iran war ceasefire article — verified via House of Commons Library).",
+    launchOrigins: [],
+    targets: [
+      { lat: 38.8951, lng: -77.0364, label: "Washington D.C. — ceasefire extension announcement" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "US-Iran ceasefire extended indefinitely. Iran given 3–5 days to engage before US resumed attacks. Sources: House of Commons Library.",
+  },
+
+  {
+    id: "apr17-hormuz-partial-open",
+    codename: "Hormuz Briefly Reopened",
+    date: "Apr 17, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Opens Hormuz During Lebanon Truce — Closes Next Day",
+    description:
+      "Iran announced commercial vessel passage through the Strait of Hormuz was completely open during the Lebanon truce. Re-closed it Apr 18 in response to the US refusal to lift its naval blockade. Sources: Wikipedia (Israel-Lebanon ceasefire article — verified via Britannica).",
+    launchOrigins: [],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — briefly reopened to commercial traffic" },
+    ],
+    munitions: "N/A — shipping/blockade event",
+    outcome:
+      "Hormuz open for one day during Lebanon truce. Re-closed Apr 18 after US refused to lift naval blockade. Sources: Britannica.",
+  },
+
+  {
+    id: "apr16-israel-lebanon-ceasefire",
+    codename: "Israel-Lebanon Ceasefire",
+    date: "Apr 16, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israel-Lebanon Ceasefire Begins — 10-Day Truce",
+    description:
+      "Trump announced a 10-day ceasefire between Israel and Hezbollah, effective 17:00 EST Apr 16. First direct US-mediated Israel-Lebanon ceasefire. VP JD Vance played a key brokering role. Israel vowed to keep troops in southern Lebanon. Crowds celebrated in Beirut. Hezbollah indicated it would respond to violations. Sources: NPR, Britannica.",
+    launchOrigins: [],
+    targets: [
+      { lat: 33.8938, lng: 35.5018, label: "Beirut — ceasefire announcement" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "10-day Israel-Hezbollah ceasefire effective 17:00 EST. First US-mediated Israel-Lebanon ceasefire. VP Vance key broker. Israel kept troops in southern Lebanon. Sources: NPR, Britannica.",
+  },
+
+  {
+    id: "apr13-us-naval-blockade",
+    codename: "US Naval Blockade of Iran",
+    date: "Apr 13, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Launches Naval Blockade of Iranian Ports",
+    description:
+      "After the Islamabad talks failed to reach agreement, Trump ordered the US Navy to begin a blockade of the Strait of Hormuz to prevent any ships transiting through Iranian ports. Iran called it a 'prelude to a violation of the ceasefire.' Marks the beginning of a US counter-blockade against Iran's existing Hormuz closure. Sources: Britannica, House of Commons Library, Congress.gov.",
+    launchOrigins: [
+      { lat: 20.5, lng: 63.0, label: "US Navy — Arabian Sea/Gulf of Oman" },
+    ],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — US naval blockade zone" },
+    ],
+    munitions: "US Navy surface combatants — blockade enforcement",
+    outcome:
+      "US naval blockade of Iranian ports imposed. Iran condemned as ceasefire violation. Dual US/Iranian blockades established in Hormuz. Sources: Britannica, House of Commons Library, Congress.gov.",
+  },
+
+  {
+    id: "apr11-islamabad-talks",
+    codename: "Islamabad Negotiations",
+    date: "Apr 11, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Islamabad Talks (Apr 11–12) — Highest US-Iran Engagement Since 1979",
+    description:
+      "VP JD Vance, Steve Witkoff, and Jared Kushner arrived in Islamabad to meet an Iranian delegation led by FM Araghchi and parliament speaker Ghalibaf. 21 hours of negotiations across 3 rounds (first indirect, second and third direct). Agreed on most of Iran's 10-point plan EXCEPT the Strait of Hormuz and Iranian nuclear program. No memorandum of understanding issued. Highest-level direct US-Iran engagement since the 1979 Iranian Revolution. Sources: Britannica, Congress.gov, NPR.",
+    launchOrigins: [],
+    targets: [
+      { lat: 33.6844, lng: 73.0479, label: "Islamabad — US-Iran negotiations" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "21 hours of negotiations. Agreement on most points except Hormuz and nuclear program. No MOU issued. Highest-level direct US-Iran engagement since 1979. Sources: Britannica, Congress.gov, NPR.",
+  },
+
+  {
+    id: "apr9-israel-lebanon-talks",
+    codename: "Israel-Lebanon Direct Talks",
+    date: "Apr 9, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israel Agrees to Direct Talks with Lebanon Under US Pressure",
+    description:
+      "Israel agreed to hold direct talks with the Lebanese government under US pressure but claimed the Apr 8 ceasefire did not apply to Lebanon. The US began a Hormuz mine-clearing operation. Trump claimed Iranians were 'agreeing to all the things they have to agree to.' The Strait did not reopen. Sources: Britannica, NPR.",
+    launchOrigins: [],
+    targets: [
+      { lat: 33.8938, lng: 35.5018, label: "Beirut — Israel-Lebanon direct talks" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "Israel agreed to direct talks with Lebanon. Ceasefire not applied to Lebanon per Netanyahu. US Hormuz mine-clearing operation began. Strait did not reopen. Sources: Britannica, NPR.",
+  },
+
+  {
+    id: "apr8-ceasefire",
+    codename: "US-Iran Ceasefire",
+    date: "Apr 8, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US-Iran Two-Week Ceasefire Agreed — Strait of Hormuz to Reopen",
+    description:
+      "Trump announced a two-week ceasefire at 6:32 PM ET (Apr 7 US / Apr 8 Middle East), based on Iran's 10-point proposal mediated by Pakistan's PM Shehbaz Sharif. Iran agreed to allow safe passage through the Strait of Hormuz for two weeks. Hours before the announcement, Trump had threatened 'a whole civilization will die tonight.' Netanyahu stated the ceasefire does not apply to Lebanon and continued strikes. Sources: Al Jazeera, NBC, CNN.",
+    launchOrigins: [],
+    targets: [
+      { lat: 33.5138, lng: 73.0480, label: "Islamabad — Pakistani-mediated ceasefire agreement" },
+    ],
+    munitions: "N/A — diplomatic ceasefire agreement",
+    outcome:
+      "Two-week US-Iran ceasefire agreed. Strait of Hormuz to reopen for safe passage. Netanyahu: ceasefire does not apply to Lebanon, strikes continued. Trump had threatened 'a whole civilization will die tonight' hours before announcement. Sources: Al Jazeera, NBC, CNN.",
+  },
+
+  {
+    id: "apr8-gulf-despite-ceasefire",
+    codename: "Gulf Strikes Despite Ceasefire",
+    date: "Apr 8, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Strikes Gulf Targets Despite Ceasefire",
+    description:
+      "Despite the ceasefire taking effect, Iran launched missile and drone strikes on Gulf targets including a major Saudi pipeline bypassing Hormuz, plus targets in Kuwait, Bahrain, and UAE oil facilities. Iran's strikes undermined confidence in the ceasefire agreement in its opening hours. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 32.40, lng: 51.38, label: "Central Iran — IRGC Aerospace" },
+    ],
+    targets: [
+      { lat: 26.00, lng: 50.00, label: "Gulf region — Saudi pipeline, Kuwait, Bahrain, UAE oil facilities" },
+    ],
+    munitions: "Ballistic missiles and Shahed drones",
+    outcome:
+      "Infrastructure damage across Gulf despite ceasefire. Major Saudi pipeline bypassing Hormuz targeted. Kuwait, Bahrain, and UAE oil facilities struck. Ceasefire compliance immediately questioned. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "apr8-operation-eternal-darkness",
+    codename: "Operation Eternal Darkness",
+    date: "Apr 8, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Operation Eternal Darkness — 100 Airstrikes in 10 Minutes Across Lebanon",
+    description:
+      "Israel launched one of its largest operations of the war: approximately 100 airstrikes in 10 minutes across southern Lebanon, Beirut's southern suburbs, and the eastern Beqaa Valley. Targets included Hezbollah HQs, intelligence centers, missile infrastructure, Radwan Force positions, and aerial and naval units. Dozens to hundreds killed; hospitals overwhelmed. Netanyahu stated the US-Iran ceasefire does not apply to Hezbollah. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.8547, lng: 35.8623, label: "Southern Lebanon, Beirut suburbs, Beqaa Valley — ~100 strikes in 10 min" },
+    ],
+    munitions: "Precision-guided munitions, JDAM-ER, Spice-2000 (assessed)",
+    outcome:
+      "~100 airstrikes in 10 minutes. Hezbollah HQs, intelligence centers, Radwan Force, missile infrastructure hit. Dozens to hundreds killed. Hospitals overwhelmed. Netanyahu: US-Iran ceasefire does not apply to Hezbollah. Sources: Al Jazeera.",
+  },
 
   {
     id: "apr7-pardis-bridges",
@@ -237,6 +547,26 @@ export const IRAN_STRIKES: IranStrike[] = [
   },
 
   {
+    id: "apr5-f15e-rescue-complete",
+    codename: "Dude 44 WSO Recovery",
+    date: "Apr 5, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "2nd F-15E Crew Member Rescued After Heavy Fighting in Iran",
+    description:
+      "After more than two days, U.S. forces recovered the second stranded F-15E crew member — the WSO (a colonel) — in a combat rescue operation inside Iranian territory. The operation involved heavy fighting and resulted in damage to multiple helicopters, the shootdown of an A-10, and the intentional destruction of 2 C-130s and 4 special operations helicopters to prevent capture by Iranian forces. Three IRGC personnel were killed. Israel postponed planned strikes to avoid interfering with the rescue operation. Sources: CNN, NBC.",
+    launchOrigins: [
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group / US special operations — Gulf region" },
+    ],
+    targets: [
+      { lat: 27.1860, lng: 56.2740, label: "Iranian territory — F-15E WSO recovery site near Strait of Hormuz" },
+    ],
+    munitions: "US special operations forces, UH-60 Black Hawks, A-10 Thunderbolt, C-130s",
+    outcome:
+      "WSO (colonel) successfully recovered. 3 IRGC killed. A-10 shot down (pilot safe). 2 C-130s and 4 special ops helicopters intentionally destroyed to prevent capture. Israel postponed strikes during operation. No US deaths confirmed. Sources: CNN, NBC.",
+  },
+
+  {
     id: "apr5-ali-al-salem",
     codename: "Strike on Ali Al Salem",
     date: "Apr 5, 2026",
@@ -316,6 +646,26 @@ export const IRAN_STRIKES: IranStrike[] = [
     munitions: "Ballistic missile (intercept debris / partial penetration assessed)",
     outcome:
       "Impact in HaKirya perimeter vicinity confirmed. No casualties. No operational disruption to IDF command. Iranian state media claimed direct hit on IDF headquarters. IDF disputed claim.",
+  },
+
+  {
+    id: "apr3-f15e-shootdown",
+    codename: "Dude 44 Shootdown",
+    date: "Apr 3, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US F-15E Shot Down Over Iran — Rescue Operation Launched",
+    description:
+      "Iranian forces shot down a US F-15E Strike Eagle (call sign Dude 44) with a shoulder-fired missile — the first manned U.S. aircraft downed by enemy fire in the war. The pilot was rescued by U.S. special forces; the WSO (a colonel) was initially missing, triggering a massive combat search and rescue (CSAR) operation involving 155 U.S. aircraft. An A-10 Thunderbolt was also struck and crashed in Kuwait (pilot safe). Two Black Hawks were hit during the rescue attempt. Iran offered a reward for the capture of the crew. Sources: CNN, NBC, Axios, Washington Post, Military Times, BBC.",
+    launchOrigins: [
+      { lat: 27.18, lng: 56.27, label: "Iranian ground forces — shoulder-fired MANPAD/SAM" },
+    ],
+    targets: [
+      { lat: 27.1860, lng: 56.2740, label: "F-15E Strike Eagle (Dude 44) — shot down over Iran near Strait of Hormuz" },
+    ],
+    munitions: "Shoulder-fired missile (MANPAD assessed) — Iranian ground forces",
+    outcome:
+      "First manned US aircraft downed by enemy fire in the war. Pilot rescued by US special forces. WSO (colonel) missing — massive CSAR operation launched (155 US aircraft). A-10 crashed in Kuwait (pilot safe). 2 Black Hawks hit during rescue. Iran offered reward for crew capture. No US deaths confirmed. Sources: CNN, NBC, Axios, Washington Post, Military Times, BBC.",
   },
 
   {
@@ -423,28 +773,190 @@ export const IRAN_STRIKES: IranStrike[] = [
   },
 
   {
-    id: "irgc-naval-commander",
-    codename: "Strike on Tangsiri",
-    date: "Mar 26, 2026",
+    id: "mar31-al-salmi-tanker",
+    codename: "Al Salmi Tanker Strike",
+    date: "Mar 31, 2026",
     year: 2026,
     campaign: "2026 Iran War",
-    title: "IRGC Naval Commander Tangsiri Killed",
+    title: "Kuwaiti Tanker Al Salmi Hit by Iranian Drone at Port of Dubai",
     description:
-      "Israeli airstrikes targeted and killed Rear Admiral Alireza Tangsiri, commander of the IRGC Navy, in a strike assessed to have used precision-guided munitions on an IRGC naval command facility near Bandar Abbas on the Strait of Hormuz. Tangsiri had overseen Iran's asymmetric naval harassment campaign against commercial shipping in the Gulf of Oman and Arabian Sea throughout the war, including the deployment of naval mines and fast-attack craft targeting tankers. His death marked the highest-ranking IRGC naval officer killed in the conflict. Iran responded within hours with a salvo of ballistic missiles targeting Haifa and Tel Aviv-area military installations, as well as intensified drone attacks against Al Udeid Air Base in Qatar and NSA Bahrain.",
+      "A Kuwaiti Very Large Crude Carrier (VLCC), the Al Salmi, was struck by an Iranian drone while anchored at the Port of Dubai, causing a fire aboard the vessel. The strike formed part of Iran's broader campaign against Gulf shipping and energy infrastructure. Iran's parliament also approved the Hormuz toll system during this period, formalizing the use of the Strait of Hormuz as a financial leverage mechanism. Sources: Al Jazeera, Strait of Hormuz crisis reporting.",
     launchOrigins: [
-      { lat: 27.18, lng: 56.27, label: "Bandar Abbas / IRGC Naval HQ" },
-      { lat: 32.07, lng: 34.78, label: "Israeli Air Force — Tel Aviv region" },
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas — IRGC drone launch" },
     ],
     targets: [
-      { lat: 27.18, lng: 56.27, label: "IRGC Naval Command, Bandar Abbas" },
-      { lat: 32.79, lng: 34.98, label: "Haifa military installations" },
-      { lat: 26.24, lng: 50.52, label: "NSA Bahrain (5th Fleet)" },
-      { lat: 25.12, lng: 51.32, label: "Al Udeid Air Base, Qatar" },
+      { lat: 25.2697, lng: 55.2963, label: "Port of Dubai — VLCC Al Salmi (Kuwaiti tanker)" },
     ],
-    munitions:
-      "Israeli: precision-guided munitions (GBU-39 SDB or Spice-250 assessed); Iranian retaliation: Fateh-313 and Emad ballistic missiles, Shahed-238 drones",
+    munitions: "Shahed-type kamikaze drone",
     outcome:
-      "Tangsiri killed. IRGC Navy's senior command structure severely degraded (following the destruction of most surface combatants on Day 6). Iranian retaliatory salvo caused damage at Haifa port infrastructure; one Haifa refinery fire suppressed after 6 hours. Al Udeid runway briefly closed.",
+      "VLCC Al Salmi struck by drone; fire caused. No confirmed casualties. Iranian parliament approved Hormuz toll system. Part of ongoing campaign against Gulf shipping. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "mar31-missile-factories",
+    codename: "Tehran & Isfahan Missile City Strikes",
+    date: "Mar 31, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Strikes on Tehran Missile Factories & Isfahan Underground 'Missile City'",
+    description:
+      "IDF struck multiple high-value military-industrial targets across Iran on March 31. In Tehran: a central site for weapons component production, a UAV engine manufacturing facility, an anti-tank missile R&D site, and a factory for filling ballistic missile warheads. In Isfahan: an underground 'missile city' weapons depot complex, additional weapons depots, and military bases were targeted. Air defense systems near the Caspian Sea were also struck. Additional strikes in Shiraz and at Parchin, Iran's main explosives and military R&D complex. Sources: Alma Research Center.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 35.6892, lng: 51.3890, label: "Tehran — missile factories, UAV engine plant, warhead filling facility" },
+      { lat: 32.40,  lng: 51.38,  label: "Isfahan — underground 'missile city,' weapons depots, military bases" },
+      { lat: 29.62,  lng: 52.53,  label: "Shiraz — military targets" },
+      { lat: 35.53,  lng: 51.73,  label: "Parchin — explosives and military R&D complex" },
+    ],
+    munitions: "GBU-28 bunker busters, GBU-57 MOP (B-2 delivery for underground sites), AGM-158 JASSM-ER",
+    outcome:
+      "Missile component production, UAV engine manufacturing, anti-tank missile R&D, and warhead filling facilities struck in Tehran. Isfahan underground 'missile city' and military bases targeted. Air defenses near Caspian Sea destroyed. Strikes also in Shiraz and Parchin. Casualties not confirmed. Sources: Alma Research Center.",
+  },
+
+  {
+    id: "mar31-hezbollah-unit1800",
+    codename: "Unit 1800 Deputy Commander Strike",
+    date: "Mar 31, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Hezbollah Unit 1800 Deputy Commander Killed in Beirut Strike",
+    description:
+      "IDF struck Beirut and eliminated Hamza Ibrahim Raqin, the deputy commander of Hezbollah's Unit 1800 — the unit responsible for coordinating Hezbollah's operations in Palestinian territories and managing its relationships with Palestinian armed groups. The unit's operations officer and another operative were also killed in the strike. Sources: Alma Research Center.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.8938, lng: 35.5018, label: "Beirut — Hezbollah Unit 1800 command location" },
+    ],
+    munitions: "Precision-guided munitions (GBU-39 SDB or Spice-250 assessed)",
+    outcome:
+      "Hamza Ibrahim Raqin (Unit 1800 deputy commander) killed. Unit 1800 operations officer and one additional operative killed. 3 Hezbollah operatives eliminated total. Sources: Alma Research Center.",
+  },
+
+  {
+    id: "mar30-tehran-blackout",
+    codename: "Tehran Blackout Strikes",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Tehran Power Infrastructure Struck — City-Wide Blackout",
+    description:
+      "US and Israeli overnight strikes targeted power infrastructure in Tehran, causing a city-wide blackout across the capital (since restored). Additional strikes on residential areas resulted in 2 killed and 5 wounded near Shaft city; 3 wounded in Saadat Abad, northern Tehran; and 9 wounded in western Tehran. A family of 4 was killed in Bushehr province. A water facility was struck in Khuzestan. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 35.6892, lng: 51.3890, label: "Tehran — power infrastructure, residential areas" },
+      { lat: 28.9688, lng: 50.8387, label: "Bushehr province — family of 4 killed" },
+      { lat: 31.32,  lng: 48.67,  label: "Khuzestan — water facility struck" },
+    ],
+    munitions: "Precision-guided munitions targeting electrical grid infrastructure (AGM-158, GBU-39 assessed)",
+    outcome:
+      "Tehran power infrastructure struck — city-wide blackout (since restored). 2 killed, 5 wounded near Shaft city. 3 wounded in Saadat Abad (north Tehran). 9 wounded in western Tehran. Family of 4 killed in Bushehr province. Water facility hit in Khuzestan. 6+ killed, 17+ wounded total. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "mar30-kuwait-desal-power",
+    codename: "Kuwait Power & Desalination Strike",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iranian Strike on Kuwait Power & Desalination Plant — 1 Worker Killed",
+    description:
+      "Iran struck a Kuwaiti electric power and water desalination plant, killing an Indian worker and damaging a service building. Kuwait described the attack as 'sinful Iranian aggression.' Kuwait National Guard downed 5 Iranian drones. Saudi Arabia intercepted 5 ballistic missiles heading towards the Eastern Province in a related salvo. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 32.40, lng: 51.38, label: "Central Iran — IRGC Aerospace" },
+    ],
+    targets: [
+      { lat: 29.3375, lng: 47.9774, label: "Kuwait — electric power and water desalination plant" },
+    ],
+    munitions: "Drones and ballistic missiles (Shahed-type and Fateh-313 assessed)",
+    outcome:
+      "1 Indian worker killed. Desalination plant service building damaged. Kuwait National Guard downed 5 drones. Saudi Arabia intercepted 5 ballistic missiles targeting Eastern Province. Kuwait condemned attack as 'sinful Iranian aggression.' Sources: Al Jazeera.",
+  },
+
+  {
+    id: "mar30-neot-hovav",
+    codename: "Ne'ot Hovav Chemical Plant Strike",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iranian Missile Hits Ne'ot Hovav Chemical Plant",
+    description:
+      "An Iranian missile struck a chemical plant in the Ne'ot Hovav industrial zone in the Negev desert of southern Israel, injuring 1 person and causing fears of a hazardous chemical leak. Ne'ot Hovav is home to one of Israel's most concentrated clusters of chemical manufacturing facilities, including fertilizer and specialty chemical plants. The strike prompted emergency hazmat response teams. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 34.35, lng: 46.95, label: "Western Iran — IRGC Aerospace" },
+    ],
+    targets: [
+      { lat: 31.1330, lng: 34.7920, label: "Ne'ot Hovav industrial zone — chemical plant, Negev" },
+    ],
+    munitions: "Ballistic missile (Khorramshahr or Kheibar Shekan assessed)",
+    outcome:
+      "Chemical plant in Ne'ot Hovav struck. 1 person injured. Hazardous chemical leak fears triggered emergency hazmat response. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "mar30-turkey-4th-missile",
+    codename: "4th Missile Over Turkey",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "NATO Intercepts 4th Iranian Missile Over Turkey",
+    description:
+      "Turkey and NATO intercepted the fourth ballistic missile directed at or over Turkish territory since the start of the war. Iran denied firing at Turkey, characterizing the incident as a false flag operation. The recurring missile incidents over Turkish airspace — a NATO member — created significant diplomatic pressure on the Alliance and on Ankara, which had been attempting to maintain a balanced position. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 38.08, lng: 46.29, label: "Northwestern Iran — IRGC Aerospace (denied by Iran)" },
+    ],
+    targets: [
+      { lat: 37.0000, lng: 35.3213, label: "Turkish airspace — 4th Iranian ballistic missile trajectory" },
+    ],
+    munitions: "Ballistic missile (type unconfirmed — Iran denied responsibility)",
+    outcome:
+      "4th Iranian missile over Turkish territory intercepted by Turkey and NATO. No casualties. Iran denied firing at Turkey, called it a false flag. Significant diplomatic pressure on NATO and Ankara's neutral stance. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "mar30-bazan-second",
+    codename: "BAZAN Second Strike",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "BAZAN Refinery Hit Again — Second Strike on Haifa Oil Facility",
+    description:
+      "Debris from an intercepted Iranian missile struck the BAZAN oil refinery in Haifa for the second time in the war, hitting a fuel tanker and damaging a roof. The fire was contained with no casualties. BAZAN operates Israel's largest oil refinery. The second strike on the facility underscored the difficulty of fully protecting major industrial infrastructure from intercept debris. Sources: Understanding War (ISW).",
+    launchOrigins: [
+      { lat: 34.35, lng: 46.95, label: "Western Iran — IRGC Aerospace" },
+    ],
+    targets: [
+      { lat: 32.7940, lng: 35.0100, label: "BAZAN oil refinery, Haifa — fuel tanker hit, roof damaged" },
+    ],
+    munitions: "Ballistic missile (intercept debris impact — second incident at facility)",
+    outcome:
+      "BAZAN refinery struck by intercept debris for second time in war. Fuel tanker hit, roof damaged. Fire contained. No casualties. Sources: Understanding War (ISW).",
+  },
+
+  {
+    id: "mar30-imam-hossein",
+    codename: "Imam Hossein University Strike",
+    date: "Mar 30, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "IDF Strikes IRGC Weapons Research Site at Imam Hossein University",
+    description:
+      "IDF struck an IRGC weapons research and testing site located at Imam Hossein University in Tehran, part of the sustained campaign against Iran's military-industrial research and development infrastructure. Imam Hossein University is the IRGC's primary military university and a major hub for weapons development, defense technology research, and IRGC officer training. Sources: Understanding War (ISW).",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 35.7590, lng: 51.5010, label: "Imam Hossein University — IRGC weapons research site, Tehran" },
+    ],
+    munitions: "Precision-guided munitions (Spice-2000 or GBU-39 assessed)",
+    outcome:
+      "IRGC weapons research and testing site at Imam Hossein University struck. Casualties not confirmed. IRGC primary military university and weapons R&D hub targeted. Sources: Understanding War (ISW).",
   },
 
   {
@@ -486,6 +998,28 @@ export const IRAN_STRIKES: IranStrike[] = [
     munitions: "Drone or short-range ballistic missile (type unconfirmed)",
     outcome:
       "1 worker killed. Desalination plant service building damaged. Kuwait reported 13 drones in airspace in prior 24 hours. Emergency water rationing protocols activated. Sources: Understanding War (ISW).",
+  },
+
+  {
+    id: "mar29-zanjan-naval",
+    codename: "Zanjan Strike & Naval R&D Hit",
+    date: "Mar 29, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Zanjan Residential Strike — 5 Killed; Naval Weapons R&D Facility Hit",
+    description:
+      "A US-Israeli strike on a residential building in Zanjan killed 5 people. IDF separately struck an Iranian naval weapons research facility. Continued strikes on Tehran included the Iran University of Science and Technology for the second consecutive day. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 36.6736, lng: 48.4787, label: "Residential building, Zanjan — 5 killed" },
+      { lat: 35.74,   lng: 51.35,   label: "Iran University of Science & Technology, Tehran (second day)" },
+    ],
+    munitions: "AGM-158 JASSM-ER, GBU-39 SDB (assessed)",
+    outcome:
+      "5 killed in Zanjan residential building. Iranian naval weapons research facility struck. Iran University of Science & Technology hit for second consecutive day. Sources: Al Jazeera.",
   },
 
   {
@@ -636,6 +1170,99 @@ export const IRAN_STRIKES: IranStrike[] = [
   },
 
   {
+    id: "mar27-hezbollah-118waves",
+    codename: "Hezbollah 118 Attack Waves",
+    date: "Mar 27, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Hezbollah Launches 118 Attack Waves Over Weekend — IDF Soldier Killed",
+    description:
+      "118 Hezbollah attack waves against Israel were identified over the Mar 27–28 weekend — one of the highest two-day totals of the war. One IDF soldier was killed and several others wounded during operations in southern Lebanon. Of the 118 waves, 34 targeted border communities, 11 targeted the 5–10 km range band, and 6 were directed toward the Haifa area. 66 of the total attacks targeted IDF forces operating inside Lebanon. Sources: Alma Research Center.",
+    launchOrigins: [
+      { lat: 33.27, lng: 35.21, label: "Southern Lebanon — Hezbollah" },
+      { lat: 33.54, lng: 35.68, label: "Bekaa Valley — Hezbollah" },
+    ],
+    targets: [
+      { lat: 33.1000, lng: 35.1000, label: "Northern Israel border communities and IDF positions in Lebanon — 118 attack waves" },
+      { lat: 32.79,  lng: 34.98,  label: "Haifa area — 6 attack waves" },
+    ],
+    munitions: "Rockets (Katyusha/Grad), Fateh-110 guided missiles, Shahed-type UAVs",
+    outcome:
+      "1 IDF soldier killed, several wounded during operations in southern Lebanon. 34 waves at border communities. 11 at 5–10 km range. 6 toward Haifa area. 66 waves targeted IDF forces in Lebanon. 118 total attack waves over the weekend. Sources: Alma Research Center.",
+  },
+
+  {
+    id: "irgc-naval-commander",
+    codename: "Strike on Tangsiri",
+    date: "Mar 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "IRGC Naval Commander Tangsiri Killed",
+    description:
+      "Israeli airstrikes targeted and killed Rear Admiral Alireza Tangsiri, commander of the IRGC Navy, in a strike assessed to have used precision-guided munitions on an IRGC naval command facility near Bandar Abbas on the Strait of Hormuz. Tangsiri had overseen Iran's asymmetric naval harassment campaign against commercial shipping in the Gulf of Oman and Arabian Sea throughout the war, including the deployment of naval mines and fast-attack craft targeting tankers. His death marked the highest-ranking IRGC naval officer killed in the conflict. Iran responded within hours with a salvo of ballistic missiles targeting Haifa and Tel Aviv-area military installations, as well as intensified drone attacks against Al Udeid Air Base in Qatar and NSA Bahrain.",
+    launchOrigins: [
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas / IRGC Naval HQ" },
+      { lat: 32.07, lng: 34.78, label: "Israeli Air Force — Tel Aviv region" },
+    ],
+    targets: [
+      { lat: 27.18, lng: 56.27, label: "IRGC Naval Command, Bandar Abbas" },
+      { lat: 32.79, lng: 34.98, label: "Haifa military installations" },
+      { lat: 26.24, lng: 50.52, label: "NSA Bahrain (5th Fleet)" },
+      { lat: 25.12, lng: 51.32, label: "Al Udeid Air Base, Qatar" },
+    ],
+    munitions:
+      "Israeli: precision-guided munitions (GBU-39 SDB or Spice-250 assessed); Iranian retaliation: Fateh-313 and Emad ballistic missiles, Shahed-238 drones",
+    outcome:
+      "Tangsiri killed. IRGC Navy's senior command structure severely degraded (following the destruction of most surface combatants on Day 6). Iranian retaliatory salvo caused damage at Haifa port infrastructure; one Haifa refinery fire suppressed after 6 hours. Al Udeid runway briefly closed.",
+  },
+
+  {
+    id: "mar25-hadera-abu-dhabi",
+    codename: "Hadera Power Plant & Abu Dhabi Debris",
+    date: "Mar 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Missile Near Orot Rabin Power Plant — Abu Dhabi Debris Kills 2",
+    description:
+      "An Iranian missile impacted near the Orot Rabin Power Plant in Hadera, Israel, causing no major structural damage to the facility. Iran maintained 7 missile waves at Israel during the day. In the Gulf, Iran launched 20 ballistic missiles and 9 drones at Kuwait — igniting a fuel tank fire at Kuwait International Airport — 30 drones at Bahrain, and 9 drones at the UAE. Falling debris from intercepted munitions in Abu Dhabi killed 2 people and injured 3. Sources: Understanding War (ISW).",
+    launchOrigins: [
+      { lat: 32.40, lng: 51.38, label: "Central Iran — IRGC Aerospace" },
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas / Hormozgan" },
+    ],
+    targets: [
+      { lat: 32.4340, lng: 34.8850, label: "Orot Rabin Power Plant, Hadera — missile impact nearby" },
+      { lat: 24.4539, lng: 54.3773, label: "Abu Dhabi — intercept debris kills 2, injures 3" },
+      { lat: 29.35,  lng: 47.52,  label: "Kuwait — 20 ballistic missiles + 9 drones; fuel tank fire" },
+      { lat: 26.24,  lng: 50.52,  label: "Bahrain — 30 drones" },
+    ],
+    munitions: "Ballistic missiles (Fateh-313, Zolfaghar assessed), Shahed-136/238 drones",
+    outcome:
+      "Missile near Hadera power plant; no major damage. 7 missile waves at Israel. Abu Dhabi: 2 killed, 3 injured from intercept debris. Kuwait fuel tank fire. Sources: Understanding War (ISW).",
+  },
+
+  {
+    id: "mar25-10000-targets",
+    codename: "10,000 Targets Struck",
+    date: "Mar 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Reports 10,000+ Targets Struck — Anti-Ship Missile Production Hit",
+    description:
+      "The US reported having struck over 10,000 targets in Iran since February 28, destroying or damaging two-thirds of Iran's missile, drone, naval production facilities and shipyards. Strikes on this day targeted anti-ship cruise missile production facilities in Tehran and the Ardakan Yellowcake Production Plant in Yazd Province, continuing the campaign to deny Iran both nuclear fuel cycle and naval strike capabilities. Sources: Times of Israel, CENTCOM.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 35.6892, lng: 51.3890, label: "Tehran — anti-ship cruise missile production facilities" },
+      { lat: 32.30,  lng: 54.02,  label: "Ardakan Yellowcake Production Plant, Yazd province" },
+    ],
+    munitions: "AGM-158 JASSM-ER, GBU-39 SDB (assessed)",
+    outcome:
+      "US cumulative strikes surpassed 10,000 targets since Feb 28. Two-thirds of Iran's missile, drone, and naval production facilities destroyed or damaged. Anti-ship cruise missile production in Tehran and Ardakan yellowcake plant struck. Sources: Times of Israel, CENTCOM.",
+  },
+
+  {
     id: "mar24-gulf-intercepts",
     codename: "Gulf-Wide Intercept Surge",
     date: "Mar 24, 2026",
@@ -677,6 +1304,103 @@ export const IRAN_STRIKES: IranStrike[] = [
     munitions: "GBU-39 SDB, AGM-158 JASSM-ER, Spice-2000 (assessed)",
     outcome:
       "Major steelworks struck. Campaign shifted to economic base targeting. Cumulative strikes reached thousands. HRANA: 80%+ of Iran's air defense destroyed. Civilian casualties in overlapping residential areas. Sources: HRANA.",
+  },
+
+  {
+    id: "mar24-isfahan-explosives",
+    codename: "Isfahan Primary Explosives Factory Strike",
+    date: "Mar 24, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "IAF Hits Iran's Primary Explosives Factory — 120+ Munitions on Isfahan",
+    description:
+      "The Israeli Air Force conducted a major strike wave using 120+ munitions against dozens of defense-industrial targets in central Isfahan, including Iran's primary explosives factory and key air defense and weapons production sites. The operation represented one of the largest single-day munitions expenditures against the Isfahan military-industrial complex in the campaign. Sources: JINSA.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 32.6546, lng: 51.6680, label: "Isfahan — primary explosives factory and defense-industrial complex" },
+    ],
+    munitions: "120+ munitions — GBU-39 SDB, Spice-2000, AGM-158 JASSM-ER (assessed)",
+    outcome:
+      "Iran's primary explosives factory struck. 120+ munitions expended against dozens of Isfahan defense-industrial targets. Key air defense and weapons production sites hit. Casualties not confirmed. Sources: JINSA.",
+  },
+
+  {
+    id: "mar24-mahanayim-killed",
+    codename: "Mahanayim Hezbollah Strike",
+    date: "Mar 24, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Woman Killed by Hezbollah Rocket Near Mahanayim — Cluster Munitions in Bnei Brak",
+    description:
+      "A Hezbollah rocket killed a woman and wounded others near Mahanayim Junction in northern Israel. Separately, cluster munition injuries were reported in Bnei Brak and Karmiel. Iran maintained 9 missile waves at Israel. In Kuwait, a drone strike caused a fire at Kuwait International Airport's fuel tank. Sources: Al Jazeera, JINSA.",
+    launchOrigins: [
+      { lat: 33.27, lng: 35.21, label: "Southern Lebanon — Hezbollah" },
+      { lat: 32.40, lng: 51.38, label: "Central Iran — IRGC Aerospace" },
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas — IRGC drone launch" },
+    ],
+    targets: [
+      { lat: 32.9750, lng: 35.5200, label: "Mahanayim Junction, northern Israel — 1 woman killed" },
+      { lat: 32.08,  lng: 34.83,  label: "Bnei Brak — cluster munition injuries" },
+      { lat: 32.92,  lng: 35.30,  label: "Karmiel — cluster munition injuries" },
+      { lat: 29.23,  lng: 47.97,  label: "Kuwait International Airport — fuel tank fire" },
+    ],
+    munitions: "Hezbollah rockets (Katyusha/Grad), Iranian ballistic missiles with cluster warheads, Shahed drones",
+    outcome:
+      "1 woman killed near Mahanayim Junction. Cluster munition injuries in Bnei Brak and Karmiel. 9 Iranian missile waves at Israel. Kuwait Airport fuel tank fire from drone strike. Sources: Al Jazeera, JINSA.",
+  },
+
+  {
+    id: "mar23-yazd-bandar-tehran",
+    codename: "Al-Ghadir Corps HQ & Broadcasting Center Strikes",
+    date: "Mar 23, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Strikes on IRGC Al-Ghadir Corps HQ in Yazd, Broadcasting Center in Bandar Abbas",
+    description:
+      "IDF struck IRGC Al-Ghadir Corps headquarters in Yazd, the Iranian State Broadcasting Center transmitter in Bandar Abbas, regime sites in Tabriz, Zahedan, Karaj, and Garmdarreh, plus government locations across Tehran. An Israeli strike in Beirut killed an IRGC Quds Force member. US forces conducted 3 strikes on PMF members south of Baghdad. Sources: JINSA.",
+    launchOrigins: [
+      { lat: 31.0,  lng: 34.5,  label: "Israeli Air Force" },
+      { lat: 20.5,  lng: 63.0,  label: "USS CVN strike group — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 31.8974, lng: 54.3569, label: "IRGC Al-Ghadir Corps HQ, Yazd" },
+      { lat: 27.18,  lng: 56.27,  label: "Iranian State Broadcasting Center transmitter, Bandar Abbas" },
+      { lat: 38.08,  lng: 46.29,  label: "Regime sites, Tabriz" },
+      { lat: 29.50,  lng: 60.86,  label: "Regime sites, Zahedan" },
+      { lat: 35.83,  lng: 50.99,  label: "Regime sites, Karaj and Garmdarreh" },
+      { lat: 35.69,  lng: 51.39,  label: "Government locations, Tehran" },
+      { lat: 33.89,  lng: 35.50,  label: "Beirut — IRGC Quds Force member killed" },
+      { lat: 32.35,  lng: 44.15,  label: "PMF members south of Baghdad — 3 strikes" },
+    ],
+    munitions: "GBU-39 SDB, AGM-158 JASSM-ER, Spice-2000 (assessed)",
+    outcome:
+      "IRGC Al-Ghadir Corps HQ in Yazd struck. Bandar Abbas broadcasting center transmitter destroyed. Regime sites hit in Tabriz, Zahedan, Karaj, Garmdarreh, and Tehran. Beirut: 1 IRGC Quds Force member killed. 3 PMF strikes south of Baghdad. Sources: JINSA.",
+  },
+
+  {
+    id: "mar23-60drone-surge",
+    codename: "60-Drone Surge — Bahrain & UAE",
+    date: "Mar 23, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Launches 16 Missiles & 60 Drones — Drone Surge on Bahrain & UAE",
+    description:
+      "Iran launched 16 ballistic missiles and 60 drones — a notable increase in drone volume over prior days. The focus shifted toward US bases in the UAE and Bahrain, with 36 drones intercepted in Bahrain alone, up from 2 the prior day. By this point, 42% of all Iranian projectiles since the war's start had targeted the UAE. Attacks on Israel continued with impacts in central and southern areas. Sources: JINSA.",
+    launchOrigins: [
+      { lat: 32.40, lng: 51.38, label: "Central Iran — IRGC Aerospace" },
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas / Hormozgan" },
+    ],
+    targets: [
+      { lat: 24.4539, lng: 54.3773, label: "UAE — US bases (42% of all Iranian projectiles since war start)" },
+      { lat: 26.24,  lng: 50.52,  label: "Bahrain — 36 drones intercepted (up from 2 prior day)" },
+      { lat: 32.09,  lng: 34.78,  label: "Central and southern Israel — continued missile attacks" },
+    ],
+    munitions: "16 ballistic missiles (Fateh-313, Zolfaghar assessed), 60 Shahed-136/238 drones",
+    outcome:
+      "60 drones launched — notable surge in drone volume. 36 drones intercepted in Bahrain. UAE targeted: 42% of all Iranian projectiles since Feb 28. Impacts in central and southern Israel. Sources: JINSA.",
   },
 
   {

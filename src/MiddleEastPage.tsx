@@ -189,8 +189,6 @@ const X_LABEL_H = 26;
 const DAY_W = 17;
 const BAR_W = 4;
 const BAR_GAP = 1;
-const SVG_H = CHART_MARGIN_TOP + CHART_H + X_LABEL_H;
-const SVG_W = CHART_MARGIN_LEFT + DAILY_STRIKE_DATA.length * DAY_W;
 
 function formatChartDate(iso: string): string {
   const d = new Date(iso + "T00:00:00Z");
@@ -203,8 +201,14 @@ function formatChartDate(iso: string): string {
 
 function StrikeVolumeChart({
   onSelectDay,
+  expanded = false,
+  onExpand,
+  onClose,
 }: {
   onSelectDay?: (day: DailyStrikeData) => void;
+  expanded?: boolean;
+  onExpand?: () => void;
+  onClose?: () => void;
 }) {
   const outerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -213,6 +217,14 @@ function StrikeVolumeChart({
     x: number;
     y: number;
   } | null>(null);
+
+  const dayW   = expanded ? 28  : DAY_W;
+  const barW   = expanded ? 7   : BAR_W;
+  const barGap = expanded ? 2   : BAR_GAP;
+  const chartH = expanded ? 180 : CHART_H;
+  const xLbH   = expanded ? 36  : X_LABEL_H;
+  const svgH   = CHART_MARGIN_TOP + chartH + xLbH;
+  const svgW   = CHART_MARGIN_LEFT + DAILY_STRIKE_DATA.length * dayW;
 
   // Auto-scale Y axis
   const maxVal = Math.max(
@@ -224,18 +236,19 @@ function StrikeVolumeChart({
     )
   );
   const yMax = Math.ceil(maxVal / 25) * 25;
-  const toH = (v: number) => (v / yMax) * CHART_H;
-  const toY = (v: number) => CHART_MARGIN_TOP + CHART_H - toH(v);
+  const toH = (v: number) => (v / yMax) * chartH;
+  const toY = (v: number) => CHART_MARGIN_TOP + chartH - toH(v);
 
+  const gridStep = expanded ? 100 : 25;
   const gridVals: number[] = [];
-  for (let v = 0; v <= yMax; v += 25) gridVals.push(v);
+  for (let v = 0; v <= yMax; v += gridStep) gridVals.push(v);
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (!svgRef.current || !outerRef.current) return;
     const svgRect = svgRef.current.getBoundingClientRect();
     const outerRect = outerRef.current.getBoundingClientRect();
     const svgX = e.clientX - svgRect.left;
-    const dayIdx = Math.floor((svgX - CHART_MARGIN_LEFT) / DAY_W);
+    const dayIdx = Math.floor((svgX - CHART_MARGIN_LEFT) / dayW);
     if (dayIdx >= 0 && dayIdx < DAILY_STRIKE_DATA.length) {
       setTooltip({
         day: DAILY_STRIKE_DATA[dayIdx],
@@ -249,12 +262,19 @@ function StrikeVolumeChart({
 
   return (
     <div ref={outerRef} className="strike-chart-outer">
-      <div className="strike-chart-title">DAILY STRIKE VOLUME — 2026 IRAN WAR</div>
+      <div className="strike-chart-title-row">
+        <div className="strike-chart-title">DAILY STRIKE VOLUME — 2026 IRAN WAR</div>
+        {expanded ? (
+          <button type="button" className="chart-modal-close-btn" onClick={onClose}>✕</button>
+        ) : (
+          <button type="button" className="chart-expand-btn" onClick={onExpand} title="Expand chart">⤢</button>
+        )}
+      </div>
       <div className="strike-chart-scroll">
         <svg
           ref={svgRef}
-          width={SVG_W}
-          height={SVG_H}
+          width={svgW}
+          height={svgH}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setTooltip(null)}
           style={{ cursor: "default", display: "block" }}
@@ -265,7 +285,7 @@ function StrikeVolumeChart({
               <line
                 x1={CHART_MARGIN_LEFT}
                 y1={toY(v)}
-                x2={SVG_W}
+                x2={svgW}
                 y2={toY(v)}
                 stroke={v === 0 ? "#334155" : "#1a2332"}
                 strokeWidth={v === 0 ? 1 : 0.75}
@@ -275,7 +295,7 @@ function StrikeVolumeChart({
                   x={CHART_MARGIN_LEFT - 4}
                   y={toY(v) + 3.5}
                   fill="#475569"
-                  fontSize={7}
+                  fontSize={expanded ? 9 : 7}
                   textAnchor="end"
                   fontFamily="JetBrains Mono, monospace"
                 >
@@ -287,15 +307,15 @@ function StrikeVolumeChart({
 
           {/* Bars */}
           {DAILY_STRIKE_DATA.map((d, i) => {
-            const dayX = CHART_MARGIN_LEFT + i * DAY_W;
-            const leftX   = dayX + 1;
-            const midX    = dayX + 1 + BAR_W + BAR_GAP;
-            const rightX  = dayX + 1 + (BAR_W + BAR_GAP) * 2;
-            const isrH    = toH(d.iranOnIsrael);
-            const gulfH   = toH(d.iranOnGulf);
-            const iusH    = toH(d.usIsraelOnIran);
-            const shipH   = d.shippingAttacks > 0 ? Math.max(toH(d.shippingAttacks), 2) : 0;
-            const baseY   = CHART_MARGIN_TOP + CHART_H;
+            const dX     = CHART_MARGIN_LEFT + i * dayW;
+            const leftX  = dX + 1;
+            const midX   = dX + 1 + barW + barGap;
+            const rightX = dX + 1 + (barW + barGap) * 2;
+            const isrH   = toH(d.iranOnIsrael);
+            const gulfH  = toH(d.iranOnGulf);
+            const iusH   = toH(d.usIsraelOnIran);
+            const shipH  = d.shippingAttacks > 0 ? Math.max(toH(d.shippingAttacks), 2) : 0;
+            const baseY  = CHART_MARGIN_TOP + chartH;
             const isHovered = tooltip?.day.date === d.date;
 
             return (
@@ -306,49 +326,50 @@ function StrikeVolumeChart({
               >
                 {/* Hover / click highlight band */}
                 <rect
-                  x={dayX}
+                  x={dX}
                   y={CHART_MARGIN_TOP}
-                  width={DAY_W}
-                  height={CHART_H}
+                  width={dayW}
+                  height={chartH}
                   fill={isHovered ? "rgba(255,255,255,0.06)" : "transparent"}
                   stroke={isHovered ? "rgba(255,255,255,0.08)" : "none"}
                   strokeWidth={0.5}
                 />
                 {/* Left bar: red (Iran→Israel) at bottom, orange (Iran→Gulf) above */}
                 {isrH > 0 && (
-                  <rect x={leftX} y={baseY - isrH} width={BAR_W} height={isrH}
+                  <rect x={leftX} y={baseY - isrH} width={barW} height={isrH}
                     fill="#ef4444" opacity={isHovered ? 1 : 0.88} />
                 )}
                 {gulfH > 0 && (
-                  <rect x={leftX} y={baseY - isrH - gulfH} width={BAR_W} height={gulfH}
+                  <rect x={leftX} y={baseY - isrH - gulfH} width={barW} height={gulfH}
                     fill="#f97316" opacity={isHovered ? 1 : 0.88} />
                 )}
                 {/* Middle bar: blue (US/Israel→Iran) */}
                 {iusH > 0 && (
-                  <rect x={midX} y={baseY - iusH} width={BAR_W} height={iusH}
+                  <rect x={midX} y={baseY - iusH} width={barW} height={iusH}
                     fill="#3b82f6" opacity={isHovered ? 1 : 0.88} />
                 )}
                 {/* Right bar: teal (shipping attacks) */}
                 {shipH > 0 && (
-                  <rect x={rightX} y={baseY - shipH} width={BAR_W} height={shipH}
+                  <rect x={rightX} y={baseY - shipH} width={barW} height={shipH}
                     fill="#14b8a6" opacity={isHovered ? 1 : 0.9} />
                 )}
               </g>
             );
           })}
 
-          {/* X-axis date labels every 3rd day */}
+          {/* X-axis date labels every 3rd day (every 2nd when expanded) */}
           {DAILY_STRIKE_DATA.map((d, i) => {
-            if (i % 3 !== 0) return null;
-            const cx = CHART_MARGIN_LEFT + i * DAY_W + DAY_W / 2;
-            const labelY = CHART_MARGIN_TOP + CHART_H + 14;
+            if (!expanded && i % 3 !== 0) return null;
+            if (expanded && i % 2 !== 0) return null;
+            const cx = CHART_MARGIN_LEFT + i * dayW + dayW / 2;
+            const labelY = CHART_MARGIN_TOP + chartH + (expanded ? 16 : 14);
             return (
               <text
                 key={d.date}
                 x={cx}
                 y={labelY}
                 fill="#475569"
-                fontSize={7}
+                fontSize={expanded ? 9 : 7}
                 textAnchor="middle"
                 fontFamily="JetBrains Mono, monospace"
               >
@@ -360,13 +381,13 @@ function StrikeVolumeChart({
           {/* Note spike markers */}
           {DAILY_STRIKE_DATA.map((d, i) => {
             if (!d.notes) return null;
-            const cx = CHART_MARGIN_LEFT + i * DAY_W + DAY_W / 2;
+            const cx = CHART_MARGIN_LEFT + i * dayW + dayW / 2;
             return (
               <circle
                 key={d.date}
                 cx={cx}
                 cy={CHART_MARGIN_TOP + 4}
-                r={2}
+                r={expanded ? 3 : 2}
                 fill="#facc15"
                 opacity={0.7}
               />
@@ -432,6 +453,104 @@ function StrikeVolumeChart({
   );
 }
 
+// ── Strike helpers ────────────────────────────────────────────────────────────
+
+const MONTH_ABBR: Record<string, number> = {
+  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+};
+
+function getWarDay(dateStr: string): number {
+  const m = dateStr.match(/^(\w+)\s+(\d+),\s+(\d+)$/);
+  if (!m) return 1;
+  const ms = Date.UTC(parseInt(m[3]), MONTH_ABBR[m[1]] ?? 0, parseInt(m[2]));
+  return Math.max(1, Math.round((ms - Date.UTC(2026, 1, 28)) / 86400000) + 1);
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  "iran-israel":    "#ef4444",
+  "iran-gulf":      "#f97316",
+  "us-israel-iran": "#3b82f6",
+  "shipping":       "#14b8a6",
+  "other":          "#64748b",
+};
+
+function getStrikeAttackerTarget(strike: IranStrike): string {
+  const from = (strike.launchOrigins[0]?.label ?? "").split("—")[0].split(",")[0].trim();
+  const to   = (strike.targets[0]?.label ?? "").split("—")[0].split(",")[0].trim();
+  if (!from && !to) return "";
+  if (!from) return `→ ${to}`;
+  if (!to)   return from;
+  return `${from} → ${to}`;
+}
+
+function extractCasualties(outcome: string): string {
+  const killed = outcome.match(/(\d[\d,]*\+?)\s+killed/i);
+  if (!killed) return "";
+  const wounded = outcome.match(/(\d[\d,]*\+?)\s+(wounded|injured)/i);
+  return wounded
+    ? `${killed[1]} killed, ${wounded[1]} ${wounded[2].toLowerCase()}`
+    : `${killed[1]} killed`;
+}
+
+// ── War Stats Bar ─────────────────────────────────────────────────────────────
+
+function WarStatsBar() {
+  return (
+    <div className="war-stats-bar">
+      {(
+        [
+          { num: "40",     label: "DAYS",              color: "#e2e8f0" },
+          { num: "3,636",  label: "KILLED IN IRAN",    color: "#f87171" },
+          { num: "23",     label: "KILLED IN ISRAEL",  color: "#60a5fa" },
+          { num: "13",     label: "US KIA",             color: "#e2e8f0" },
+          { num: "1,700+", label: "KILLED IN LEBANON", color: "#fb923c" },
+        ] as const
+      ).map(({ num, label, color }) => (
+        <div key={label} className="war-stat">
+          <div className="war-stat-num" style={{ color }}>{num}</div>
+          <div className="war-stat-label">{label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Epic Fury Summary ────────────────────────────────────────────────────────
+
+const EF_TOTAL_US_ISRAEL  = DAILY_STRIKE_DATA.reduce((s, d) => s + d.usIsraelOnIran,  0);
+const EF_TOTAL_IRAN_ISRAEL = DAILY_STRIKE_DATA.reduce((s, d) => s + d.iranOnIsrael,    0);
+const EF_TOTAL_IRAN_GULF   = DAILY_STRIKE_DATA.reduce((s, d) => s + d.iranOnGulf,      0);
+const EF_TOTAL_SHIPPING    = DAILY_STRIKE_DATA.reduce((s, d) => s + d.shippingAttacks, 0);
+const EF_GRAND_TOTAL = EF_TOTAL_US_ISRAEL + EF_TOTAL_IRAN_ISRAEL + EF_TOTAL_IRAN_GULF + EF_TOTAL_SHIPPING;
+
+const EPIC_FURY_MILESTONES: { day: number; date: string; color: string; text: string }[] = [
+  { day: 1,  date: "Feb 28, 2026", color: "#3b82f6", text: "Khamenei killed in opening salvo — 900 strikes in 12 hours" },
+  { day: 2,  date: "Mar 1, 2026",  color: "#f97316", text: "6 US soldiers killed at Port Shuaiba, Kuwait" },
+  { day: 3,  date: "Mar 2, 2026",  color: "#ef4444", text: "Hezbollah enters war — fires on northern Israel" },
+  { day: 5,  date: "Mar 4, 2026",  color: "#3b82f6", text: "Iranian Navy declared combat ineffective" },
+  { day: 9,  date: "Mar 8, 2026",  color: "#facc15", text: "First oil facility strikes — Brent crosses $100/barrel" },
+  { day: 13, date: "Mar 12, 2026", color: "#3b82f6", text: "Kharg Island struck — 90 military targets destroyed" },
+  { day: 18, date: "Mar 17, 2026", color: "#3b82f6", text: "Larijani killed — Israel invades southern Lebanon" },
+  { day: 19, date: "Mar 18, 2026", color: "#facc15", text: "South Pars gas field struck — Iran retaliates on Qatar LNG" },
+  { day: 21, date: "Mar 20, 2026", color: "#3b82f6", text: "Natanz nuclear facility hit with bunker busters" },
+  { day: 22, date: "Mar 21, 2026", color: "#ef4444", text: "Dimona/Arad struck — 190+ injured near Israeli nuclear site" },
+  { day: 28, date: "Mar 27, 2026", color: "#14b8a6", text: "Hormuz formally closed — E-3 Sentry destroyed at Prince Sultan" },
+  { day: 29, date: "Mar 28, 2026", color: "#facc15", text: "Houthis enter war — missiles at Beersheba and Eilat" },
+  { day: 35, date: "Apr 3, 2026",  color: "#facc15", text: "US F-15E shot down over Iran — 2-day rescue operation" },
+  { day: 38, date: "Apr 6, 2026",  color: "#3b82f6", text: "South Pars petrochemicals: 85% of Iran's exports offline" },
+  { day: 40, date: "Apr 8, 2026",  color: "#facc15", text: "Ceasefire agreed — Operation Eternal Darkness in Lebanon" },
+];
+
+function EpicFurySummary({ onToggle }: { onToggle: () => void }) {
+  return (
+    <button type="button" className="ef-trigger" onClick={onToggle}>
+      <span className="ef-trigger-arrow">▸</span>
+      OPERATION <span className="ef-accent">EPIC FURY</span>
+    </button>
+  );
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export function MiddleEastPage() {
@@ -451,6 +570,9 @@ export function MiddleEastPage() {
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
   const [expandedDates, setExpandedDates] = useState<Set<string>>(new Set());
   const [strikeFilter, setStrikeFilter] = useState<StrikeFilterId>("all");
+  const [chartExpanded, setChartExpanded] = useState(false);
+  const [expandedStrikes, setExpandedStrikes] = useState<Set<string>>(new Set());
+  const [epicFuryExpanded, setEpicFuryExpanded] = useState(false);
   const dateGroupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Create scene on mount
@@ -696,9 +818,21 @@ export function MiddleEastPage() {
               </button>
             </div>
             {strikeHistoryOpen && (
-              <div className="me-strike-timeline">
-                {/* Daily volume chart — clicking a bar expands that date */}
-                <StrikeVolumeChart onSelectDay={handleChartSelectDay} />
+              <>
+                {/* Operation Epic Fury — trigger button only; modal rendered at top level */}
+                <EpicFurySummary
+                  onToggle={() => setEpicFuryExpanded((v) => !v)}
+                />
+
+                <div className="me-strike-timeline">
+                {/* Daily volume chart — click title row button to expand */}
+                <StrikeVolumeChart
+                  onSelectDay={handleChartSelectDay}
+                  onExpand={() => setChartExpanded(true)}
+                />
+
+                {/* War summary stats */}
+                <WarStatsBar />
 
                 {/* Category filter chips */}
                 <div className="me-strike-filter-chips">
@@ -753,7 +887,8 @@ export function MiddleEastPage() {
                       )}
                       {dateOrder.map((date) => {
                         const group = dateMap[date];
-                        const isExpanded = expandedDates.has(date);
+                        const isDateExpanded = expandedDates.has(date);
+                        const warDay = getWarDay(date);
                         return (
                           <div
                             key={date}
@@ -773,30 +908,77 @@ export function MiddleEastPage() {
                                 })
                               }
                             >
-                              <span
-                                className={`me-date-chevron ${isExpanded ? "open" : ""}`}
-                              />
-                              <span className="me-date-label">{date}</span>
-                              <span className="me-date-count">
-                                {group.length}
+                              <span className={`me-date-chevron ${isDateExpanded ? "open" : ""}`} />
+                              <span className="me-date-label">
+                                {date}
+                                <span className="me-date-day-num"> · Day {warDay}</span>
                               </span>
+                              <span className="me-date-count">{group.length} events</span>
                             </button>
-                            {isExpanded && (
+                            {isDateExpanded && (
                               <div className="me-date-group">
-                                {group.map((strike) => (
-                                  <div
-                                    key={strike.id}
-                                    className={`me-strike-compact ${selectedStrike?.id === strike.id ? "active" : ""}`}
-                                    onClick={() => handleSelectStrike(strike)}
-                                  >
-                                    <span className="me-strike-compact-code">
-                                      {strike.codename}
-                                    </span>
-                                    <span className="me-strike-compact-title">
-                                      {strike.title}
-                                    </span>
-                                  </div>
-                                ))}
+                                {group.map((strike) => {
+                                  const cat = getStrikeCategory(strike);
+                                  const catColor = CATEGORY_COLORS[cat] ?? "#64748b";
+                                  const route = getStrikeAttackerTarget(strike);
+                                  const cas = extractCasualties(strike.outcome);
+                                  const isStrikeExpanded = expandedStrikes.has(strike.id);
+                                  return (
+                                    <div
+                                      key={strike.id}
+                                      className={`me-strike-compact-v2 ${selectedStrike?.id === strike.id ? "active" : ""}`}
+                                    >
+                                      <div
+                                        className="me-strike-row"
+                                        onClick={() => handleSelectStrike(strike)}
+                                      >
+                                        <div
+                                          className="me-strike-cat-bar"
+                                          style={{ background: catColor }}
+                                        />
+                                        <div className="me-strike-row-content">
+                                          <div className="me-strike-row-title">{strike.title}</div>
+                                          {(route || cas) && (
+                                            <div className="me-strike-row-meta">
+                                              {route && <span className="me-strike-row-route">{route}</span>}
+                                              {cas && <span className="me-strike-row-casualties">{cas}</span>}
+                                            </div>
+                                          )}
+                                        </div>
+                                        <button
+                                          type="button"
+                                          className={`me-strike-expand-btn ${isStrikeExpanded ? "open" : ""}`}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setExpandedStrikes((prev) => {
+                                              const next = new Set(prev);
+                                              if (next.has(strike.id)) next.delete(strike.id);
+                                              else next.add(strike.id);
+                                              return next;
+                                            });
+                                          }}
+                                        >›</button>
+                                      </div>
+                                      {isStrikeExpanded && (
+                                        <div className="me-strike-details">
+                                          {strike.munitions && (
+                                            <div className="me-strike-detail-row">
+                                              <span className="me-strike-dl">MUNITIONS</span>
+                                              <span>{strike.munitions}</span>
+                                            </div>
+                                          )}
+                                          {strike.outcome && (
+                                            <div className="me-strike-detail-row">
+                                              <span className="me-strike-dl">OUTCOME</span>
+                                              <span>{strike.outcome}</span>
+                                            </div>
+                                          )}
+                                          <div className="me-strike-detail-desc">{strike.description}</div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -806,6 +988,7 @@ export function MiddleEastPage() {
                   );
                 })}
               </div>
+              </>
             )}
           </div>
 
@@ -1311,6 +1494,154 @@ export function MiddleEastPage() {
               {hoveredBase.type === "domestic"
                 ? "Missile Program"
                 : "US/Allied Base"}
+            </div>
+          </div>
+        )}
+
+        {/* ── Chart Modal Overlay ── */}
+        {chartExpanded && (
+          <div
+            className="chart-modal-backdrop"
+            onClick={() => setChartExpanded(false)}
+          >
+            <div
+              className="chart-modal-inner"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <StrikeVolumeChart
+                onSelectDay={handleChartSelectDay}
+                expanded
+                onClose={() => setChartExpanded(false)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ── Epic Fury Modal Overlay ── */}
+        {epicFuryExpanded && (
+          <div
+            className="ef-modal-backdrop"
+            onClick={() => setEpicFuryExpanded(false)}
+          >
+            <div
+              className="ef-modal-panel"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="ef-modal-header">
+                <div className="ef-modal-title-block">
+                  <div className="ef-modal-title">
+                    OPERATION <span className="ef-accent">EPIC FURY</span>
+                  </div>
+                  <div className="ef-modal-subtitle">FEB 28 – APR 8, 2026 · 40 DAYS</div>
+                </div>
+                <button
+                  type="button"
+                  className="ef-modal-close"
+                  onClick={() => setEpicFuryExpanded(false)}
+                >✕</button>
+              </div>
+
+              <div className="ef-modal-divider" />
+
+              {/* Casualties */}
+              <div className="ef-modal-section-label">CASUALTIES</div>
+              <div className="ef-modal-stat-row">
+                {(
+                  [
+                    { num: "3,636",  label: "KILLED IN IRAN",    color: "#f87171", border: "rgba(248,113,113,0.3)", bg: "rgba(248,113,113,0.07)" },
+                    { num: "23",     label: "KILLED IN ISRAEL",  color: "#60a5fa", border: "rgba(96,165,250,0.3)",  bg: "rgba(96,165,250,0.07)"  },
+                    { num: "13",     label: "US KIA",             color: "#e2e8f0", border: "rgba(226,232,240,0.2)", bg: "rgba(255,255,255,0.03)" },
+                    { num: "1,700+", label: "KILLED IN LEBANON", color: "#fb923c", border: "rgba(251,146,60,0.3)",  bg: "rgba(251,146,60,0.07)"  },
+                    { num: "520+",   label: "US WOUNDED",         color: "#e2e8f0", border: "rgba(226,232,240,0.2)", bg: "rgba(255,255,255,0.03)" },
+                  ] as const
+                ).map(({ num, label, color, border, bg }) => (
+                  <div
+                    key={label}
+                    className="ef-modal-stat"
+                    style={{ background: bg, borderColor: border }}
+                  >
+                    <div className="ef-modal-stat-num" style={{ color }}>{num}</div>
+                    <div className="ef-modal-stat-label">{label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ef-modal-divider" />
+
+              {/* Strike Totals */}
+              <div className="ef-modal-section-label">STRIKE TOTALS</div>
+              <div className="ef-modal-grand-total">
+                TOTAL STRIKES:{" "}
+                <span className="ef-modal-grand-num">{EF_GRAND_TOTAL.toLocaleString()}</span>
+              </div>
+              <div className="ef-modal-breakdown">
+                <span style={{ color: "#3b82f6" }}>US/Israel → Iran: <strong>{EF_TOTAL_US_ISRAEL.toLocaleString()}</strong></span>
+                <span className="ef-sep">|</span>
+                <span style={{ color: "#ef4444" }}>Iran → Israel: <strong>{EF_TOTAL_IRAN_ISRAEL.toLocaleString()}</strong></span>
+                <span className="ef-sep">|</span>
+                <span style={{ color: "#f97316" }}>Iran → Gulf: <strong>{EF_TOTAL_IRAN_GULF.toLocaleString()}</strong></span>
+                <span className="ef-sep">|</span>
+                <span style={{ color: "#14b8a6" }}>Shipping: <strong>{EF_TOTAL_SHIPPING.toLocaleString()}</strong></span>
+              </div>
+              <div className="ef-modal-context">
+                80+ verified events tracked · 12 countries involved · $120B+ estimated regional damage · 20,000 seafarers stranded in Hormuz
+              </div>
+
+              <div className="ef-modal-divider" />
+
+              {/* Key Milestones — 2-column grid */}
+              <div className="ef-modal-section-label">KEY MILESTONES</div>
+              <div className="ef-modal-milestones-grid">
+                <div className="ef-modal-milestone-col">
+                  {EPIC_FURY_MILESTONES.slice(0, 6).map((m) => (
+                    <button
+                      key={m.day}
+                      type="button"
+                      className="ef-modal-milestone"
+                      onClick={() => {
+                        setEpicFuryExpanded(false);
+                        setExpandedDates((prev) => new Set([...prev, m.date]));
+                        setTimeout(() => {
+                          dateGroupRefs.current[m.date]?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                          });
+                        }, 80);
+                      }}
+                    >
+                      <div className="ef-milestone-bar" style={{ background: m.color }} />
+                      <span className="ef-milestone-day">DAY {m.day}</span>
+                      <span className="ef-milestone-text">{m.text}</span>
+                      <span className="ef-milestone-arrow">›</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="ef-modal-milestone-col">
+                  {EPIC_FURY_MILESTONES.slice(6).map((m) => (
+                    <button
+                      key={m.day}
+                      type="button"
+                      className="ef-modal-milestone"
+                      onClick={() => {
+                        setEpicFuryExpanded(false);
+                        setExpandedDates((prev) => new Set([...prev, m.date]));
+                        setTimeout(() => {
+                          dateGroupRefs.current[m.date]?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                          });
+                        }, 80);
+                      }}
+                    >
+                      <div className="ef-milestone-bar" style={{ background: m.color }} />
+                      <span className="ef-milestone-day">DAY {m.day}</span>
+                      <span className="ef-milestone-text">{m.text}</span>
+                      <span className="ef-milestone-arrow">›</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}

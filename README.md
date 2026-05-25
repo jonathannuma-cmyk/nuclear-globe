@@ -2,6 +2,10 @@
 
 An interactive 3D globe-based OSINT tool that visualizes global military threats using publicly available intelligence data.
 
+## Live Demo
+
+**[View the live site →](https://global-threat-tracker-psi.vercel.app)**
+
 ## What It Does
 
 **Nuclear Arsenal Tracker** — Maps 70+ nuclear facilities across all 9 nuclear states with range domes, targeting arcs, submarine patrol routes, threat assessment mode, and an animated 1945–2025 historical timeline.

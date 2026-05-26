@@ -5,7 +5,6 @@ import { DetailPanel } from "./DetailPanel";
 import { ThreatPanel } from "./ThreatPanel";
 import { CountryBorders } from "./CountryBorders";
 import { TimelineSlider } from "./TimelineSlider";
-import { LandingScreen } from "./LandingScreen";
 import { DataSourcesModal } from "./DataSourcesModal";
 import { HistoricEventCard } from "./HistoricEventCard";
 import {
@@ -28,9 +27,6 @@ const TIMELINE_MAX = 2025;
 const PLAY_INTERVAL_MS = 200;
 
 function App() {
-  const [showLanding, setShowLanding] = useState(true);
-  const [uiVisible, setUiVisible] = useState(false);
-  const [entering, setEntering] = useState(false);
   const [showSources, setShowSources] = useState(false);
 
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
@@ -90,24 +86,13 @@ function App() {
       onCityClick: (city) => {
         setThreatTarget(city);
       },
-    }, { initialCameraZ: 8 });
+    });
     sceneApiRef.current.setCities(MAJOR_CITIES);
     return () => {
       sceneApiRef.current?.dispose();
       sceneApiRef.current = null;
     };
   }, []);
-
-  const handleEnter = async () => {
-    if (entering) return;
-    setEntering(true);
-    setShowLanding(false);
-    try {
-      await sceneApiRef.current?.flyCameraToDefault();
-    } finally {
-      setUiVisible(true);
-    }
-  };
 
   useEffect(() => {
     sceneApiRef.current?.setFilter(activeFilter);
@@ -239,13 +224,7 @@ function App() {
 
       <NavBar />
 
-      <LandingScreen
-        showLanding={showLanding}
-        blockSceneInteraction={showLanding}
-        onEnter={handleEnter}
-      />
-
-      <div className={`ui-layer ${uiVisible ? "ui-layer--visible" : ""}`}>
+      <div className="ui-layer ui-layer--visible">
         <header className="header">
           <div className="header-left">
             <div className="logo-icon" />

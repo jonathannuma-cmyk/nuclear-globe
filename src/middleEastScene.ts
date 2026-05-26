@@ -520,18 +520,53 @@ export function createMEScene(
         const triIdx = earcut(flatCoords, holeIndices.length > 0 ? holeIndices : undefined, 2);
         if (triIdx.length === 0) return;
 
-        const totalPts = flatCoords.length / 2;
+        // Subdivide each earcut triangle in flat lng/lat space until every edge
+        // is <= FILL_MAX_DEG, then project to the sphere. Keeps every fill
+        // triangle hugging the surface so its chord never dips below the globe
+        // (radius 1.0) and gets occluded — the cause of the unfilled interior wedge.
+        const FILL_MAX_DEG = 1.0;
         const verts: number[] = [];
-        for (let i = 0; i < totalPts; i++) {
-          const lng = flatCoords[i * 2];
-          const lat = flatCoords[i * 2 + 1];
+        const idx: number[] = [];
+
+        const pushVert = (lng: number, lat: number): number => {
           const p = latLngToVector3(lat, lng, 1.001);
           verts.push(p.x, p.y, p.z);
+          return verts.length / 3 - 1;
+        };
+
+        const subdivide = (
+          ax: number, ay: number,
+          bx: number, by: number,
+          cx: number, cy: number
+        ): void => {
+          const eab = Math.hypot(bx - ax, by - ay);
+          const ebc = Math.hypot(cx - bx, cy - by);
+          const eca = Math.hypot(ax - cx, ay - cy);
+          if (Math.max(eab, ebc, eca) <= FILL_MAX_DEG) {
+            idx.push(pushVert(ax, ay), pushVert(bx, by), pushVert(cx, cy));
+            return;
+          }
+          const mabx = (ax + bx) / 2, maby = (ay + by) / 2;
+          const mbcx = (bx + cx) / 2, mbcy = (by + cy) / 2;
+          const mcax = (cx + ax) / 2, mcay = (cy + ay) / 2;
+          subdivide(ax, ay, mabx, maby, mcax, mcay);
+          subdivide(mabx, maby, bx, by, mbcx, mbcy);
+          subdivide(mcax, mcay, mbcx, mbcy, cx, cy);
+          subdivide(mabx, maby, mbcx, mbcy, mcax, mcay);
+        };
+
+        for (let t = 0; t < triIdx.length; t += 3) {
+          const i0 = triIdx[t], i1 = triIdx[t + 1], i2 = triIdx[t + 2];
+          subdivide(
+            flatCoords[i0 * 2], flatCoords[i0 * 2 + 1],
+            flatCoords[i1 * 2], flatCoords[i1 * 2 + 1],
+            flatCoords[i2 * 2], flatCoords[i2 * 2 + 1]
+          );
         }
 
         const fillGeo = new THREE.BufferGeometry();
         fillGeo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
-        fillGeo.setIndex(triIdx);
+        fillGeo.setIndex(idx);
 
         const fillMat = new THREE.MeshBasicMaterial({
           color: borderColor,

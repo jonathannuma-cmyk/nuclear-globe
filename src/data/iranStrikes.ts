@@ -93,6 +93,200 @@ export const IRAN_STRIKES: IranStrike[] = [
   // ── 2026 Iran War (reverse chronological) ────────────────────────────────
 
   {
+    id: "may26-lebanon-31killed",
+    codename: "Israel Expands Lebanon Offensive",
+    date: "May 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israel's Expanded Lebanon Offensive Kills at Least 31",
+    description:
+      "Israel's expanded offensive across Lebanon killed at least 31 people. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.8547, lng: 35.8623, label: "Lebanon — Israeli expanded offensive" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "At least 31 killed across Lebanon in Israel's expanded offensive. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "may26-doha-talks",
+    codename: "Doha Talks — Iran-US",
+    date: "May 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iranian Delegation Holds Talks in Doha — Rubio Says Deal Could Take 'Days'",
+    description:
+      "An Iranian delegation including FM Araghchi, Speaker Ghalibaf, and Central Bank Governor Hemmati held talks in Doha, Qatar. Secretary Rubio said a deal could take 'days.' Iran vowed a 'swift, decisive response' to the US strikes at Bandar Abbas. Sources: Al Jazeera.",
+    launchOrigins: [],
+    targets: [
+      { lat: 25.29, lng: 51.53, label: "Doha, Qatar — Iran-US negotiations" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "Iranian delegation (Araghchi, Ghalibaf, Hemmati) met in Doha. Rubio: deal could take 'days.' Iran threatened swift response to US Bandar Abbas strikes. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "may26-iran-mq9-drone",
+    codename: "IRGC Claims MQ-9 Shootdown",
+    date: "May 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Claims It Downed US MQ-9 Reaper and Fired on F-35 and RQ-4 Aircraft",
+    description:
+      "Iran's IRGC announced it had downed a US MQ-9 Reaper drone and fired on F-35 and RQ-4 aircraft over Iranian territory. Sources: Al Jazeera.",
+    launchOrigins: [
+      { lat: 27.0, lng: 56.0, label: "IRGC air defense — southern Iran" },
+    ],
+    targets: [
+      { lat: 27.0, lng: 56.0, label: "Southern Iran airspace — US MQ-9 Reaper drone" },
+    ],
+    munitions: "IRGC surface-to-air missiles (assessed)",
+    outcome:
+      "IRGC claimed MQ-9 Reaper downed over Iranian territory. F-35 and RQ-4 also engaged. Sources: Al Jazeera.",
+  },
+
+  {
+    id: "may26-hormuz-escort-resumed",
+    codename: "Operation Project Freedom Resumed",
+    date: "May 26, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Restarts Hormuz Escort — Operation Project Freedom Resumed After May 5 Pause",
+    description:
+      "CENTCOM and the US Navy announced they had restarted escorting vessels through the Strait of Hormuz, resuming Operation Project Freedom after the May 5 pause. Sources: Wall Street Journal, US military officials.",
+    launchOrigins: [
+      { lat: 20.5, lng: 63.0, label: "US Navy CENTCOM — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — merchant vessel escort corridor" },
+    ],
+    munitions: "US Navy surface combatants — escort operations",
+    outcome:
+      "Operation Project Freedom resumed. Hormuz escort missions restarted after May 5 pause. Sources: Wall Street Journal, US military officials.",
+  },
+
+  {
+    id: "may25-centcom-bandar-abbas",
+    codename: "CENTCOM Self-Defence Strikes — Bandar Abbas",
+    date: "May 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US CENTCOM Strikes SAM Site at Bandar Abbas and Two IRGC Mine-Laying Vessels",
+    description:
+      "US CENTCOM conducted 'self-defence' strikes that destroyed a surface-to-air missile site at Bandar Abbas and two IRGC mine-laying vessels near the Strait of Hormuz, killing several IRGC personnel. Explosions were also reported near Sirik and Jask. Sources: Al Jazeera, Reuters, Fox News.",
+    launchOrigins: [
+      { lat: 20.5, lng: 63.0, label: "US Navy CENTCOM — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 27.18, lng: 56.27, label: "Bandar Abbas — SAM site and IRGC mine-laying vessels" },
+    ],
+    munitions: "Precision air-launched munitions (assessed)",
+    outcome:
+      "SAM site at Bandar Abbas destroyed. Two IRGC mine-laying vessels sunk. Several IRGC personnel killed. Explosions reported near Sirik and Jask. Sources: Al Jazeera, Reuters, Fox News.",
+  },
+
+  {
+    id: "may25-bekaa-valley",
+    codename: "Israeli Strikes — Bekaa Valley",
+    date: "May 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israeli Air Force Carries Out Successive Strikes on Hezbollah Sites in Bekaa Valley",
+    description:
+      "The Israeli air force carried out successive strikes on Hezbollah sites in the Bekaa Valley in eastern Lebanon. Sources: Al Jazeera, The Times of Israel.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 34.00, lng: 36.20, label: "Bekaa Valley, eastern Lebanon — Hezbollah sites" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "Successive strikes on Hezbollah sites across the Bekaa Valley. Sources: Al Jazeera, The Times of Israel.",
+  },
+
+  {
+    id: "may25-tyre-airstrikes",
+    codename: "Israeli Strikes Near Tyre",
+    date: "May 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Israeli Airstrikes Hit Tyre Area — 3 Killed as Netanyahu Orders Escalated Offensive",
+    description:
+      "Israeli airstrikes hit towns and villages near Tyre in southern Lebanon, killing 3 people, as Netanyahu ordered an escalated offensive to 'crush' Hezbollah. Sources: France 24, News24.",
+    launchOrigins: [
+      { lat: 31.0, lng: 34.5, label: "Israeli Air Force" },
+    ],
+    targets: [
+      { lat: 33.2720, lng: 35.2080, label: "Tyre area, southern Lebanon" },
+    ],
+    munitions: "Precision-guided munitions (assessed)",
+    outcome:
+      "3 killed near Tyre. Netanyahu ordered escalated offensive to 'crush' Hezbollah. Sources: France 24, News24.",
+  },
+
+  {
+    id: "may25-hezbollah-metula",
+    codename: "Hezbollah Drone — Metula",
+    date: "May 25, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Hezbollah Drone Strikes Home in Metula — 8 Attacks Claimed Including Misgav Am",
+    description:
+      "A Hezbollah drone struck a home in Metula, northern Israel. Hezbollah claimed 8 attacks during the day, including a drone strike on Israeli troops at Misgav Am. Sources: The Times of Israel.",
+    launchOrigins: [
+      { lat: 33.27, lng: 35.21, label: "Southern Lebanon — Hezbollah" },
+    ],
+    targets: [
+      { lat: 33.28, lng: 35.58, label: "Metula, northern Israel" },
+    ],
+    munitions: "Hezbollah attack drones",
+    outcome:
+      "Home struck in Metula. 8 Hezbollah attacks claimed on the day, including drone on troops at Misgav Am. Sources: The Times of Israel.",
+  },
+
+  {
+    id: "may22-iran-mou",
+    codename: "Iran-US MOU Largely Negotiated",
+    date: "May 22, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Trump Says War 'Will Be Over Soon' — MOU With Iran Reported Largely Negotiated",
+    description:
+      "Trump said the war 'will be over with soon'; a memorandum of understanding was reported 'largely negotiated' with Iran. Sources: The Times of Israel, Al Jazeera.",
+    launchOrigins: [],
+    targets: [
+      { lat: 38.8951, lng: -77.0364, label: "Washington D.C. / US-Iran talks" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "MOU with Iran reported largely negotiated. Trump declared war 'will be over soon.' Sources: The Times of Israel, Al Jazeera.",
+  },
+
+  {
+    id: "may19-strike-hold",
+    codename: "Planned Strike on Iran Held",
+    date: "May 19, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Holds Planned Strike on Iran as Doha Negotiations Advance",
+    description:
+      "The United States put a planned strike on Iran on hold as negotiations advanced through the Doha track. Sources: Al Jazeera.",
+    launchOrigins: [],
+    targets: [
+      { lat: 25.29, lng: 51.53, label: "Doha, Qatar — US-Iran negotiation track" },
+    ],
+    munitions: "N/A — diplomatic event",
+    outcome:
+      "Planned US strike on Iran held pending Doha negotiations. Sources: Al Jazeera.",
+  },
+
+  {
     id: "may15-lebanon-45day-extension",
     codename: "Israel-Lebanon Ceasefire Extended",
     date: "May 15, 2026",
@@ -148,6 +342,44 @@ export const IRAN_STRIKES: IranStrike[] = [
     munitions: "Small boats, ballistic missiles, Shahed drones (Iranian); Apaches and aircraft (US response)",
     outcome:
       "No US ships hit. US struck Iranian military facilities in response. Iran condemned as ceasefire violation. Sources: CBS News, Euronews, CENTCOM.",
+  },
+
+  {
+    id: "may5-project-freedom-pause",
+    codename: "Operation Project Freedom Paused",
+    date: "May 5, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Trump Pauses Operation Project Freedom — Cites 'Great Progress' Toward Iran Deal",
+    description:
+      "Trump announced Tuesday evening that Operation Project Freedom was temporarily paused, citing 'great progress' toward a complete and final agreement with Iran. The naval blockade of Iranian ports remained in full force despite the pause. Sources: NBC News, Fox News, AP.",
+    launchOrigins: [],
+    targets: [
+      { lat: 38.8951, lng: -77.0364, label: "Washington D.C. — Operation Project Freedom pause announcement" },
+    ],
+    munitions: "N/A — diplomatic announcement",
+    outcome:
+      "Operation Project Freedom temporarily paused. Naval blockade of Iranian ports remained in full force. Sources: NBC News, Fox News, AP.",
+  },
+
+  {
+    id: "may4-project-freedom",
+    codename: "Operation Project Freedom",
+    date: "May 4, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Launches Operation Project Freedom — Second Stage of War Declared",
+    description:
+      "The United States launched Operation Project Freedom, a naval escort mission to shepherd merchant vessels through the Strait of Hormuz, declared the second stage of the war following Operation Epic Fury. The Pentagon announced that US forces sank six Iranian ships at the start of the operation. Sources: AP, Wikipedia.",
+    launchOrigins: [
+      { lat: 20.5, lng: 63.0, label: "US Navy CENTCOM — Arabian Sea strike group" },
+    ],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — merchant vessel escort corridor" },
+    ],
+    munitions: "US Navy surface combatants; 6 Iranian vessels sunk",
+    outcome:
+      "Operation Project Freedom launched. 6 Iranian ships sunk. Merchant vessel escort corridor through Strait of Hormuz established. Second stage of war declared. Sources: AP, Wikipedia.",
   },
 
   {

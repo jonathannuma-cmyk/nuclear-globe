@@ -93,6 +93,62 @@ export const IRAN_STRIKES: IranStrike[] = [
   // ── 2026 Iran War (reverse chronological) ────────────────────────────────
 
   {
+    id: "may27-iran-internet-restored",
+    codename: "Iran Internet Restored",
+    date: "May 27, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Restores Internet After Monthslong Shutdown — Heavy Restrictions Remain",
+    description:
+      "Iran restored internet access after a monthslong shutdown, though heavy restrictions remained in place. Source: AP.",
+    launchOrigins: [],
+    targets: [
+      { lat: 32.4, lng: 53.7, label: "Iran — internet restored" },
+    ],
+    munitions: "N/A — domestic event",
+    outcome:
+      "Internet access restored in Iran after monthslong blackout. Heavy restrictions remain. Source: AP.",
+  },
+
+  {
+    id: "may27-irgc-hormuz-vessels",
+    codename: "IRGC Hormuz Passage Announcement",
+    date: "May 27, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "Iran Says 23 Vessels Allowed Through Hormuz — Conditions Passage on 'Iranian Order'",
+    description:
+      "Iran's IRGC announced that 23 vessels had been allowed through the Strait of Hormuz 'so far,' conditioning passage on countries respecting 'Iranian order.' Source: RFE/RL.",
+    launchOrigins: [],
+    targets: [
+      { lat: 26.5650, lng: 56.2500, label: "Strait of Hormuz — IRGC-conditioned passage" },
+    ],
+    munitions: "N/A — shipping/blockade event",
+    outcome:
+      "23 vessels allowed through Hormuz under IRGC conditions. Passage tied to respecting 'Iranian order.' Source: RFE/RL.",
+  },
+
+  {
+    id: "may27-us-defensive-strikes",
+    codename: "US Overnight Defensive Strikes — Hormuz",
+    date: "May 27, 2026",
+    year: 2026,
+    campaign: "2026 Iran War",
+    title: "US Carries Out Overnight 'Defensive' Strikes Near Hormuz — Multiple Iranian Drones Shot Down",
+    description:
+      "US forces carried out new overnight 'defensive' strikes on an Iranian military site assessed to threaten US forces and commercial shipping near the Strait of Hormuz, and shot down multiple Iranian drones. Sources: Reuters, RFE/RL.",
+    launchOrigins: [
+      { lat: 20.5, lng: 63.0, label: "US Navy CENTCOM — Arabian Sea" },
+    ],
+    targets: [
+      { lat: 27.18, lng: 56.27, label: "Southern Iran / Strait of Hormuz — Iranian military site" },
+    ],
+    munitions: "Precision air-launched munitions; drone intercepts",
+    outcome:
+      "Iranian military site destroyed. Multiple Iranian drones shot down. No US casualties reported. Sources: Reuters, RFE/RL.",
+  },
+
+  {
     id: "may26-lebanon-31killed",
     codename: "Israel Expands Lebanon Offensive",
     date: "May 26, 2026",
